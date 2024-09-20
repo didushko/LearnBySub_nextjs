@@ -1,0 +1,18 @@
+.defaultBackdrop {
+  position: fixed;
+  background-color: rgba(4, 4, 4, 0.8);
+  inset: 0;
+  align-content: center;
+  z-index: 3;
+}
+
+.modalBackdrop {
+  background-color: rgb(4, 4, 4, 0.8);
+  overflow: auto;
+}
+
+.modalContent {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}

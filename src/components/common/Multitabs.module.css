@@ -1,0 +1,55 @@
+.multitabs {
+  cursor: pointer;
+  display: flex;
+  flex-grow: 1;
+  height: auto;
+  flex-wrap: wrap;
+  gap: 0px;
+  background-color: #444;
+  border-radius: 20px;
+  border: 1px solid rgba(var(--blueUk), 0.5);
+}
+.tab {
+  flex-grow: 1;
+  display: flex;
+  padding: 10px 5px 10px 5px;
+  justify-content: center;
+  border-radius: 20px;
+}
+
+.selected {
+  background-color: #000;
+  color: rgb(169, 191, 245);
+  border: 1px solid rgba(var(--yellowUk), 0.4);
+}
+
+.tab:hover:not(.selected) {
+  background-color: #333;
+}
+
+.loading {
+  animation: snakeAnimation 1s linear infinite;
+}
+
+@keyframes snakeAnimation {
+  0% {
+    box-shadow: 3px 3px 10px rgba(var(--yellowUk), 0.3),
+      -3px -3px 10px rgba(var(--blueUk), 0.5);
+  }
+  25% {
+    box-shadow: 3px -3px 10px rgba(var(--yellowUk), 0.3),
+      -3px 3px 10px rgba(var(--blueUk), 0.5);
+  }
+  50% {
+    box-shadow: -3px -3px 10px rgba(var(--yellowUk), 0.3),
+      3px 3px 10px rgba(var(--blueUk), 0.5);
+  }
+  75% {
+    box-shadow: -3px 3px 10px rgba(var(--yellowUk), 0.3),
+      -3px -3px 10px rgba(var(--blueUk), 0.5);
+  }
+  100% {
+    box-shadow: 3px 3px 10px rgba(var(--yellowUk), 0.3),
+      -3px -3px 10px rgba(var(--blueUk), 0.5);
+  }
+}

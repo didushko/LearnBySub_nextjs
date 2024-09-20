@@ -1,0 +1,9 @@
+import UserInfo from "../../../../components/profile/userInfo";
+
+export default function TestSettingsSlot({
+  params,
+}: {
+  params: { active?: string };
+}) {
+  return <UserInfo page={params.active} />;
+}

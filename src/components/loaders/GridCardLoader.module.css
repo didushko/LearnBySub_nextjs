@@ -1,0 +1,89 @@
+.cardGrid {
+  font-family: Base, serif;
+  justify-content: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  gap: 20px;
+}
+
+.card {
+  height: 330px;
+  aspect-ratio: 1/1.5;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(150, 150, 150, 0.1),
+    transparent
+  );
+  background-size: 400%;
+  background-position: 0%;
+  border-radius: 5px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: width 700ms, height 700ms, margin 700ms, box-shadow 400ms;
+  animation: shimmer 2s infinite;
+}
+
+.title {
+  position: absolute;
+  text-align: center;
+  align-items: center;
+  font-size: medium;
+  width: 100%;
+  padding: 5px 10px;
+  height: 15%;
+  background-color: rgb(20, 20, 20, 0.9);
+  bottom: 0;
+  /* animation: pulse 1.5s infinite; */
+  /* mask: ; */
+}
+
+.text {
+  height: 40%;
+  margin: 2% auto;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(150, 150, 150, 0.1),
+    transparent
+  );
+  border-radius: 5px;
+  background-size: 400%;
+  background-position: 0%;
+  animation: shimmer 2s infinite;
+}
+
+/* @keyframes pulse {
+  0% {
+    background-color: rgba(150, 150, 150, 0);
+  }
+  50% {
+    background-color: rgba(150, 150, 150, 0.1);
+  }
+  100% {
+    background-color: rgba(150, 150, 150, 0);
+  }
+} */
+/* 
+@keyframes shimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+} */
+
+@keyframes shimmer {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}

@@ -1,0 +1,35 @@
+.signForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 10px;
+  align-items: center;
+}
+
+.loading {
+  animation: snakeAnimation 1s linear infinite;
+}
+
+@keyframes snakeAnimation {
+  0% {
+    box-shadow: 3px 3px 10px rgba(255, 215, 0, 0.3),
+      -3px -3px 10px rgba(0, 87, 184, 0.5);
+  }
+  25% {
+    box-shadow: 3px -3px 10px rgba(255, 215, 0, 0.3),
+      -3px 3px 10px rgba(0, 87, 184, 0.5);
+  }
+  50% {
+    box-shadow: -3px -3px 10px rgba(255, 215, 0, 0.3),
+      3px 3px 10px rgba(0, 87, 184, 0.5);
+  }
+  75% {
+    box-shadow: -3px 3px 10px rgba(255, 215, 0, 0.3),
+      -3px -3px 10px rgba(0, 87, 184, 0.5);
+  }
+  100% {
+    box-shadow: 3px 3px 10px rgba(255, 215, 0, 0.3),
+      -3px -3px 10px rgba(0, 87, 184, 0.5);
+  }
+}

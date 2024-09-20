@@ -1,0 +1,37 @@
+.result {
+  width: 50%;
+  margin: 2% auto;
+  padding: 10px 5px;
+  background-color: rgb(37, 38, 39);
+  box-shadow: 0px 0px 10px 10px rgb(65, 65, 65, 0.6);
+  border-radius: 10px;
+  height: -webkit-fill-available;
+  min-height: 30%;
+  max-height: 90%;
+  overflow: scroll;
+}
+
+.resultContainer {
+  width: 95%;
+  display: inline-flex;
+  gap: 2%;
+  height: 100px;
+  margin: 5px 20px;
+  box-shadow: inset rgba(255, 215, 0, 0.2) 0px 0px 5px 0px,
+    rgba(0, 87, 184, 0.3) 0px 0px 5px 0px;
+}
+
+
+.imageContainer {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 100%;
+}
+
+@media (max-width: 850px) {
+  .result {
+    width: 90%;
+  }
+}

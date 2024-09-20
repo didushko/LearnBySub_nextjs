@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  & svg {
+    width: 20%;
+    height: 20%;
+    color: rgba(0 0 0 / 0.4);
+    filter: drop-shadow(0px 0px 8px rgba(249, 228, 0, 0.3));
+    & path {
+      stroke: #0057b7;
+      stroke-width: 5;
+      fill: none;
+      /* fill: rgba(249, 228, 0, 0.8); */
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw 3s linear infinite, fade 3s linear infinite;
+    }
+  }
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}

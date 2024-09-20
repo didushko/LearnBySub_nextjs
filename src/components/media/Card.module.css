@@ -1,0 +1,89 @@
+@font-face {
+  font-family: Base;
+  src: url("../../fonts/BodoniModaSC-Italic-VariableFont_opsz\,wght.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.cardGrid {
+  font-family: Base, serif;
+  justify-content: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  gap: 20px;
+}
+
+.card {
+  height: 330px;
+  aspect-ratio: 1/1.5;
+  background-color: #262525;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: width 700ms, height 700ms, margin 700ms, box-shadow 400ms;
+}
+
+.card:hover {
+  height: 350px;
+  margin: -10px -7px -10px -6px;
+  box-shadow: 0px 0px 50px 10px rgba(100, 100, 100, 0.85);
+}
+
+.raite {
+  position: absolute;
+  width: 20%;
+  z-index: 1;
+  opacity: 1;
+}
+
+.lang {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  opacity: 1;
+}
+
+.title {
+  position: absolute;
+  text-align: center;
+  font-size: medium;
+  width: 100%;
+  padding: 5px 10px;
+  /* height: 15%; */
+  background-color: rgb(20, 20, 20, 0.9);
+  bottom: 0;
+}
+
+.star-border {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  max-height: 100%;
+  max-width: 100%;
+  z-index: 0;
+}
+
+.star-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.star-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: space-between;
+  max-height: 100%;
+  max-width: 100%;
+  aspect-ratio: 5 / 1;
+  margin: auto;
+}

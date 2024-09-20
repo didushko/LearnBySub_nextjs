@@ -1,0 +1,24 @@
+.user_container {
+  position: sticky;
+  display: flex;
+  left: 0;
+  top: var(--header-height);
+  padding: 5%;
+  margin: 10%;
+  align-items: center;
+  background-color: rgb(42, 42, 42);
+  align-content: space-between;
+  height: 70vh;
+  border-radius: 3%;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.selected {
+  color: red;
+}
+
+.image {
+  border-radius: 50%;
+  transition: 0.2s height ease, 1s width ease;
+}

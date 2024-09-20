@@ -1,0 +1,113 @@
+@font-face {
+  font-family: EDU;
+  src: url(../../fonts/EduVICWANTBeginner-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+.backdrop {
+  position: fixed;
+  opacity: 0.1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: -1;
+}
+
+.mediaInfo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  margin: auto;
+}
+
+.tytlePartMobile {
+  display: none;
+}
+
+.sideBlock {
+  position: sticky;
+  left: 0;
+  margin: 2%;
+
+  text-align: center;
+  top: var(--header-height);
+  height: 90vh;
+}
+
+.sideBlock > * {
+  margin-top: 20px;
+}
+
+.posterPart {
+  position: relative;
+  height: 70%;
+  aspect-ratio: 1 / 1.5;
+  overflow: hidden;
+  margin: auto;
+}
+
+.raitingBlock {
+  margin: 2%;
+  width: 80%;
+  margin: auto;
+}
+.raitingBlock > :last-child {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mainBlock {
+  margin: 20px;
+  word-wrap: normal;
+}
+
+.tytlePart {
+  width: 100%;
+  margin: auto;
+  word-wrap: break-word;
+}
+
+.tytlePart h1,
+.tytlePartMobile h1 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 300%;
+  color: #ebebb9;
+  text-shadow: rgba(0, 0, 255, 0.5) 4px 4px;
+
+  word-wrap: break-word;
+}
+.tytlePart h4,
+.tytlePartMobile h4 {
+  font-size: 80%;
+  margin: 0;
+}
+.tytlePart blockquote,
+.tytlePartMobile blockquote {
+  width: max-content;
+  max-width: 80%;
+  color: #f0f0f0;
+  padding: 10px 20px;
+  border-left: 3px solid #ccc;
+  margin: 10px 10px;
+  background-color: rgba(249, 249, 249, 0.2);
+  font-family: "EDU", sans-serif;
+}
+
+@media (max-width: 850px) {
+  .mediaInfo {
+    display: flex;
+    flex-direction: column;
+  }
+  .tytlePartMobile {
+    display: block;
+  }
+  .sideBlock {
+    position: static;
+    height: auto;
+  }
+  .tytlePart {
+    display: none;
+  }
+}
