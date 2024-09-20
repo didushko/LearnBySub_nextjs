@@ -1,7 +1,7 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import styles from "./AuthButtons.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -22,15 +22,29 @@ declare global {
 }
 
 export function SignOutButton() {
+  const pathname = usePathname();
   return (
-    <button onClick={() => signOut({ callbackUrl: "/signin" })}>
+    <button
+      onClick={() => signOut({ callbackUrl: "/signin?callback=" + pathname })}
+    >
       Signin out
     </button>
   );
 }
 
 export function SignInButton() {
-  return <button onClick={() => signIn()}>Sign in</button>;
+  const pathname = usePathname();
+  const router = useRouter();
+  return (
+    <button
+      onClick={() =>
+        // signIn(undefined, { callbackUrl: "/asd/asds" })
+        router.push("/signin?callback=" + pathname)
+      }
+    >
+      Sign in
+    </button>
+  );
 }
 
 export function Providers({
@@ -38,6 +52,7 @@ export function Providers({
 }: {
   providers: { bot_id?: string; google: boolean };
 }) {
+  const searchParams = useSearchParams();
   if (!providers) {
     return null;
   }
@@ -45,18 +60,22 @@ export function Providers({
     <>
       <hr className={styles.providersAfter} />
       <div className={styles.providers}>
-        {providers.google ? <GoogleSignIn /> : null}
-        <TelegramSignIn bot_id={providers.bot_id} />
+        {providers.google ? (
+          <GoogleSignIn callbackPath={searchParams.get("callback") || "/"} />
+        ) : null}
+        <TelegramSignIn
+          bot_id={providers.bot_id}
+          callback={searchParams.get("callback") || "/"}
+        />
       </div>
     </>
   );
 }
 
-function GoogleSignIn() {
-  const pathname = usePathname();
+function GoogleSignIn({ callbackPath }: { callbackPath: string }) {
   return (
     <div
-      onClick={() => signIn("google", { callbackUrl: pathname || "/" })}
+      onClick={() => signIn("google", { callbackUrl: callbackPath || "/" })}
       className={styles.button}
     >
       <div className={styles.googleIcon}></div>
@@ -65,7 +84,13 @@ function GoogleSignIn() {
   );
 }
 
-function TelegramSignIn({ bot_id }: { bot_id?: string }) {
+function TelegramSignIn({
+  bot_id,
+  callback,
+}: {
+  bot_id?: string;
+  callback: string;
+}) {
   const pathname = usePathname();
   if (!bot_id) {
     return null;
@@ -85,7 +110,7 @@ function TelegramSignIn({ bot_id }: { bot_id?: string }) {
               request_access: "write",
             },
             (data: any) => {
-              signIn("telegram", data);
+              signIn("telegram", { ...data, callbackUrl: callback });
             }
           )
         }

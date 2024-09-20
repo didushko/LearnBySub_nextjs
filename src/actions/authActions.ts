@@ -3,13 +3,11 @@
 import { signIn } from "@/services/auth-service";
 import ApiError from "@/exceptions/apiError";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
 import { ZodError } from "zod";
 
-export async function signInAction(formData: FormData, pathname: string) {
+export async function signInAction(formData: FormData) {
   try {
     await signIn("credentials", formData);
-    return redirect(pathname || "/");
   } catch (e) {
     if (e instanceof AuthError) {
       if (

@@ -4,13 +4,12 @@ import UserSettingsModel, {
 
 import ApiError from "../exceptions/apiError";
 import userModel from "@/database/models/user-model";
+import DatabaseConnection from "@/database/DatabaseConnetion";
 
-import connectToDatabase from "@/database/dbConnect";
 
-class UserSettingsService {
+class UserSettingsService extends DatabaseConnection {
   async get(userId: string) {
     try {
-      connectToDatabase();
       let found = await UserSettingsModel.findOne({ userId });
       if (!found) {
         const user = await userModel.findOne({ _id: userId });
@@ -31,7 +30,6 @@ class UserSettingsService {
     needUpdate: Partial<IUserSettings>
   ): Promise<IUserSettings> {
     try {
-      connectToDatabase();
       const updatedSettings = await UserSettingsModel.findOneAndUpdate(
         { userId: userId },
         needUpdate,

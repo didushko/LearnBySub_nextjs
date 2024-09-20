@@ -2,6 +2,7 @@ import { auth } from "@/services/auth-service";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Profile.Button.module.css";
+import { SignInButton } from "../auth/AuthButtons";
 
 const ProfileButton = async () => {
   const session = await auth();
@@ -39,8 +40,7 @@ const ProfileButton = async () => {
         </div>
       </Link>
     );
-  } else 
-  return <Link href={"/signin"}>Sign in</Link>;
+  } else return <SignInButton />;
 };
 
 export default ProfileButton;

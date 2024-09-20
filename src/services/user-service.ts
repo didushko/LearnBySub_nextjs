@@ -5,12 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 import ApiError from "@/exceptions/apiError";
 import roleModel, { IRole } from "@/database/models/role-model";
 import userSettingsService from "./userSettings-service";
-import connectToDatabase from "@/database/dbConnect";
 import UserDto from "@/interfaces/user-dto";
+import DatabaseConnection from "@/database/DatabaseConnetion";
 
-class UserService {
+class UserService extends DatabaseConnection {
   async registration(email: string, password: string, uiLanguage?: string) {
-    await connectToDatabase();
     const found = await UserModel.findOne({ email });
     if (found) {
       throw ApiError.badRequest(`User with email ${email} alredy exist`);
@@ -37,7 +36,6 @@ class UserService {
   }
 
   async activation(activationLink: string) {
-    await connectToDatabase();
     const user = await UserModel.findOne({ activationLink }).populate<{
       roles: IRole[];
     }>("roles");
@@ -53,7 +51,6 @@ class UserService {
   }
 
   async checkActivate(email: string): Promise<UserDto> {
-    await connectToDatabase();
     const user = await UserModel.findOne({ email }).populate<{
       roles: IRole[];
     }>("roles");
@@ -67,7 +64,6 @@ class UserService {
   }
 
   async login(email: string, password: string) {
-    await connectToDatabase();
     const user = await UserModel.findOne({ email }).populate<{
       roles: IRole[];
     }>("roles");

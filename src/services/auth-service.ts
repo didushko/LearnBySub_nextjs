@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { object, string } from "zod";
 import userService from "@/services/user-service";
-import connectToDatabase from "@/database/dbConnect";
 import telegramService from "@/services/telegram-service";
 import { AUTH_EXPIRE_TIME } from "@/constants";
 import Facebook from "next-auth/providers/facebook";
@@ -43,7 +42,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          connectToDatabase();
           const { email, password } = await signInSchema.parseAsync(
             credentials
           );

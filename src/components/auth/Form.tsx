@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./Form.module.css";
 import { signInAction } from "@/actions/authActions";
 import { ZodIssue } from "zod";
-import { usePathname } from "next/navigation";
+import {
+  useSearchParams,
+  useRouter,
+} from "next/navigation";
 
 export default function Form({
   children,
@@ -26,7 +29,8 @@ export default function Form({
       }
     }
   };
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (errors && Array.isArray(errors)) {
@@ -47,11 +51,13 @@ export default function Form({
       className={styles.signForm}
       action={async (formData) => {
         document.getElementById("formContainer")?.classList.add(styles.loading);
-        let errors = await signInAction(formData, pathname || "/");
+        let errors = await signInAction(
+          formData);
         document
           .getElementById("formContainer")
           ?.classList.remove(styles.loading);
         setErrors(errors || []);
+        router.push(searchParams.get("callback") || "/");
       }}
     >
       {children}
