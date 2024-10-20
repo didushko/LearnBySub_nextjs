@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Form.module.css";
 import { signInAction } from "@/actions/authActions";
 import { ZodIssue } from "zod";
-import {
-  useSearchParams,
-  useRouter,
-} from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Form({
   children,
@@ -17,20 +15,16 @@ export default function Form({
   const [errors, setErrors] = useState<
     ZodIssue[] | Error[] | { message: string } | any
   >([]);
-  const getError = (field: string) => {
-    if (Array.isArray(errors)) {
-      const filtred = errors.map((err: ZodIssue) => {
-        if ("path" in err && err.path.includes(field)) {
-          return err.message;
-        }
-      });
-      if (filtred.length) {
-        return filtred[0];
-      }
-    }
-  };
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  useEffect(() => {
+    if (searchParams.get("error")) {
+      toast.error(
+        "There was a problem when trying to authenticate. Please contact us if this error persists"
+      );
+    }
+  }, []);
 
   useEffect(() => {
     if (errors && Array.isArray(errors)) {
@@ -44,20 +38,22 @@ export default function Form({
           });
         }
       });
-    }
+    } else toast.error("Something went wrong, please try later");
   }, [errors]);
   return (
     <form
       className={styles.signForm}
       action={async (formData) => {
         document.getElementById("formContainer")?.classList.add(styles.loading);
-        let errors = await signInAction(
-          formData);
+        setErrors([]);
+        const errors = await signInAction(formData);
         document
           .getElementById("formContainer")
           ?.classList.remove(styles.loading);
         setErrors(errors || []);
-        router.push(searchParams.get("callback") || "/");
+        if (!errors) {
+          router.push(searchParams.get("callback") || "/");
+        }
       }}
     >
       {children}

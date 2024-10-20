@@ -1,16 +1,12 @@
 import { auth } from "@/services/auth-service";
 import styles from "./userInfo.module.css";
-import { profileTabs } from "../../app/profile/profilePages";
 import Link from "next/link";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import { SignOutButton } from "../auth/AuthButtons";
+import { profileTabs } from "@/app/[locale]/profile/profilePages";
 
 export default async function UserInfo({ page }: { page?: string }) {
   const session = await auth();
-  if (!session) {
-    return redirect("/login");
-  }
 
   const tabs = profileTabs();
   return (
@@ -45,11 +41,8 @@ export default async function UserInfo({ page }: { page?: string }) {
       </div>
       <div>
         {tabs.map((tab) => (
-          <Link href={tab.key}>
-            <div
-              key={tab.key}
-              className={page === tab.key ? styles.selected : ""}
-            >
+          <Link href={tab.key} key={tab.key}>
+            <div className={page === tab.key ? styles.selected : ""}>
               {tab.name}
             </div>
           </Link>

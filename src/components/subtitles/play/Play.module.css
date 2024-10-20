@@ -1,0 +1,20 @@
+.backdrop {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+  inset: 0;
+  align-content: center;
+  z-index: 3;
+}
+
+.content {
+  width: 50%;
+  margin: 2% auto;
+  padding: 10px 5px;
+  background-color: rgb(37, 38, 39);
+  box-shadow: 0px 0px 10px 10px rgb(65, 65, 65, 0.6);
+  border-radius: 10px;
+  height: -webkit-fill-available;
+  min-height: 30%;
+  max-height: 90%;
+  overflow: scroll;
+}

@@ -16,6 +16,10 @@ export interface IDetailsTv extends IMediaDetailsCommon {
   number_of_episodes: number;
   number_of_seasons: number;
   original_name: string;
+  last_episode_to_air: {
+    episode_number: number;
+    season_number: number;
+  };
   seasons: {
     air_date: string | null;
     episode_count: number;

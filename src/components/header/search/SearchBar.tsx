@@ -4,12 +4,15 @@ import useDebounce from "@/hooks/useDebounce";
 import useModalComponent from "@/hooks/useModalComponent";
 import styles from "./SearchBar.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Loader from "@/components/loaders/Loader";
+import React from "react";
+import SearchResultLoader from "../loaders/SearchResultLoader";
+import { useTranslation } from "react-i18next";
 
 export default function SearchBar({ children }: { children: ReactElement }) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search") || ""
   );
@@ -19,37 +22,44 @@ export default function SearchBar({ children }: { children: ReactElement }) {
     !!searchQuery
   );
 
-  const setParams = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set("search", value);
-    } else {
-      params.delete("search");
-    }
-    replace(`${pathName}?${params.toString()}`);
-  };
+  const setParams = useCallback(
+    (value: string) => {
+      if (value !== searchParams.get("search")) {
+        const params = new URLSearchParams(searchParams);
+        if (value) {
+          params.set("search", value);
+        } else {
+          params.delete("search");
+        }
+        replace(`${pathName}?${params.toString()}`);
+      }
+    },
+    [pathName, replace, searchParams]
+  );
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    setModalVisible(true);
   };
 
   useEffect(() => {
     setParams(debaunsedSearchQuery);
-  }, [debaunsedSearchQuery,]);
+  }, [debaunsedSearchQuery, setParams]);
+
+  useEffect(() => {
+    setModalVisible(false);
+  }, [pathName, setModalVisible]);
   return (
     <>
       <ModalComponent
-        key={"SearchModal" + searchParams.get("search")}
         backdropeStyleClass={styles.BackDropWraper}
         dropCallback={() => {
-          setParams("");
+          setModalVisible(false);
         }}
       >
         {(searchParams.get("search") || "") === debaunsedSearchQuery ? (
           children
         ) : (
-          <Loader />
+          <SearchResultLoader />
         )}
       </ModalComponent>
 
@@ -73,12 +83,14 @@ export default function SearchBar({ children }: { children: ReactElement }) {
           autoComplete="off"
           name="search-features"
           id="search-features"
-          placeholder="Пошук..."
+          placeholder={t("search")}
           onChange={searchHandle}
           value={searchQuery}
           onFocus={() => {
-            setModalVisible(true);
-            setParams(debaunsedSearchQuery);
+            if (debaunsedSearchQuery) {
+              setModalVisible(true);
+              setParams(debaunsedSearchQuery);
+            }
           }}
         />
       </div>

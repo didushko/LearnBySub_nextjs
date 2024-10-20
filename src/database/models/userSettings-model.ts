@@ -1,15 +1,14 @@
-import mongoose, { Schema, model, Types, Document, Model } from "mongoose";
+import mongoose, { Schema, model, Model } from "mongoose";
 
 export interface IUserSettings {
-  userId: Types.ObjectId;
+  user_id: String;
   learningLanguages: string[];
   uiLanguage: string;
 }
 
 const UserSettingsSchema = new Schema<IUserSettings>({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+  user_id: {
+    type: String,
     unique: true,
     required: true,
   },

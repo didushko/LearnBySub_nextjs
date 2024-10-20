@@ -1,0 +1,7 @@
+.paginationContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: auto;
+  justify-content: center;
+}

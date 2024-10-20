@@ -3,19 +3,23 @@ import tmdbService from "@/services/tmdb-service";
 import Link from "next/link";
 import styles from "./SearchResult.module.css";
 import PosterImg from "@/components/media/PosterImg";
+import TruncatedText from "@/components/common/TruncatedText";
+import initTranslations from "@/commons/i18n";
 
 export default async function SearchResult({
   query,
+  locale,
 }: {
   query: string;
+  locale: string;
   callback?: Function;
 }) {
+  const { t } = await initTranslations(locale, ["media"]);
   if (!query) {
-    return (
-      <div className={styles.result}>
-        <span>Last searches:</span>
-      </div>
-    );
+    return null;
+    <div className={styles.result}>
+      <span>Last searches:</span>
+    </div>
   }
 
   if (query.length < 2) {
@@ -30,7 +34,7 @@ export default async function SearchResult({
       await tmdbService.search({
         query,
         adult: false,
-        language: "en",
+        language: locale,
         page: 1,
       })
     ).results;
@@ -44,22 +48,30 @@ export default async function SearchResult({
     }
     return (
       <div className={styles.result}>
-        {data.map((media) => {
+        {data.map((media, i) => {
           let { title, year } = tmdbService.getUnitMediaFields(media);
           return (
-            <Link key={media.id} href={`media/${media.media_type}/${media.id}`}>
+            <Link
+              key={media.id}
+              href={{
+                pathname: `/media/${media.media_type}/${media.id}`,
+              }}
+            >
               <div className={styles.resultContainer}>
                 <div className={styles.imageContainer}>
                   <PosterImg
                     sizes="70px"
                     posterPath={media.poster_path}
                     title={title}
+                    priority={i < 2}
                   />
                 </div>
                 <div>
-                  <div>{title}</div>
-                  <div>{year}</div>
-                  <div>{media.media_type}</div>
+                  <div className={styles.text}>
+                    <TruncatedText position="bottom">{title}</TruncatedText>
+                  </div>
+                  <div className={styles.text}>{year.toString()}</div>
+                  <div className={styles.text}>{t(media.media_type)}</div>
                 </div>
               </div>
             </Link>

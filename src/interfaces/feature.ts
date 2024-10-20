@@ -78,12 +78,12 @@ interface SubtitlesCounts {
   [key: string]: number;
 }
 
-interface Season {
+export interface Season {
   season_number: number;
   episodes: {
     episode_number: number;
     title: String;
     feature_id: number;
     feature_imdb_id: number;
-  };
+  }[];
 }

@@ -1,6 +1,6 @@
 "use client";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import styles from "./Modal.module.css";
 
@@ -36,7 +36,11 @@ const Modal = ({
   }, [visible]);
 
   const backDropHandle = () => {
-    if (dropCallback) dropCallback();
+    if (dropCallback) {
+      dropCallback();
+    } else {
+      setMounted(false);
+    }
   };
 
   if (!backdropeStyleClass) {
@@ -46,11 +50,20 @@ const Modal = ({
   if (mounted && visible) {
     return createPortal(
       <div {...rest}>
-        <div className={backdropeStyleClass}>
-          <div className={styles.modalBackdrop} onClick={backDropHandle}></div>
-        </div>
-        <div className={backdropeStyleClass}>
-          <div className={styles.modalContent}>{children}</div>
+        <div className={backdropeStyleClass} onClick={backDropHandle}>
+          <div
+            className={styles.modalContent}
+            tabIndex={0}
+            onKeyUp={(e) => {
+              if (e.key == "Escape") {
+                backDropHandle();
+              }
+            }}
+            autoFocus={true}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </div>
         </div>
       </div>,
       document?.body

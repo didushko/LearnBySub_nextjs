@@ -1,6 +1,5 @@
 import UserModel from "@/database/models/user-model";
 import bcrypt from "bcryptjs";
-// import mailService from "./mail-service";
 import { v4 as uuidv4 } from "uuid";
 import ApiError from "@/exceptions/apiError";
 import roleModel, { IRole } from "@/database/models/role-model";

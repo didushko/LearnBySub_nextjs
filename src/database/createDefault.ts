@@ -1,6 +1,6 @@
 import Role from "./models/role-model";
 
-async function initializeDefaultRoles() {
+export default async function initializeDefaultRoles() {
   try {
     const defaultRoles = ["ADMIN", "UNACTIVATED", "USER"];
 
@@ -18,7 +18,3 @@ async function initializeDefaultRoles() {
     process.exit(1);
   }
 }
-
-export default async () => {
-  await initializeDefaultRoles();
-};

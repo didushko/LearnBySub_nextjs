@@ -1,0 +1,63 @@
+.title::after {
+  content: "";
+  height: 0;
+  width: 0;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: opacity 0.4s ease-in, transform 0.4s ease-out;
+}
+.title {
+  display: inline-grid;
+  width: 100%;
+}
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trancated {
+  position: relative;
+  overflow: visible;
+}
+.trancated::after {
+  content: attr(data-text);
+  display: block;
+  position: absolute;
+  height: min-content;
+  background: rgba(25, 25, 25, 0.8);
+  backdrop-filter: blur(10px);
+  word-wrap: break-word;
+  z-index: 999;
+  white-space: break-spaces;
+  right: 0;
+  left: 0;
+  width: 100%;
+  border: 0.2px white solid;
+  opacity: 1;
+  padding: 5px 5px;
+  width: calc(100% - 10px);
+  transition: opacity 0.4s ease-in, transform 0.4s ease-out;
+}
+
+.top::after {
+  border-radius: 5px 5px 0px 0px;
+  transform: translateY(-100%);
+}
+
+.bottom::after {
+  border-radius: 0px 0px 5px 5px;
+  transform: translateY(50%);
+}
+
+.left::after {
+  border-radius: 5px 0px 0px 5px;
+  transform: translateX(-100%) translateY(-50%);
+}
+
+.right::after {
+  border-radius: 0px 5px 5px 0px;
+  transform: translateX(100%);
+}

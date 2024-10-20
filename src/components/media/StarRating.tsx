@@ -38,7 +38,6 @@ const StarRatingSolo = ({
         {position ? (
           <rect
             y="0"
-            // x={24 - (21 * percentage) / 100}
             x="0"
             height="24"
             width={(24 * percentage) / 100}
@@ -55,9 +54,7 @@ const StarRatingSolo = ({
         )}
       </mask>
       <path d={path} fill={fillColor} mask={`url(#mask-${clipPathId})`} />
-      {/* Окантовка зірки */}
       <path d={path} stroke={strokeColor} strokeWidth="1" fill="none" />
-      {/* Текст у центрі */}
       <text
         x="12"
         y="14"

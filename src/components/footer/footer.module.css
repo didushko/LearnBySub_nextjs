@@ -1,10 +1,11 @@
 .footer_container {
-  height: 250px;
+  height: var(--footer_height);
   width: 100%;
   background-color: #252627;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: auto;
 }
 
 .footer_section {
@@ -12,5 +13,14 @@
   flex-direction: column;
 }
 
-.section_name {
+@media (max-width: 300px) {
+  .footer_container {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .footer_container {
+    display: none;
+  }
 }

@@ -9,10 +9,8 @@ export default class DatabaseConnection {
 
         if (typeof originalMethod === "function") {
           return async function (...args: any[]) {
-            // Викликаємо перевірку з'єднання з базою даних
             await target.checkDatabaseConnection();
 
-            // Викликаємо оригінальний метод
             return originalMethod.apply(target, args);
           };
         }
@@ -22,7 +20,8 @@ export default class DatabaseConnection {
     });
   }
 
-  async checkDatabaseConnection() {
+  private async checkDatabaseConnection() {
+
     let cached = (global as any).mongoose;
 
     if (!cached) {

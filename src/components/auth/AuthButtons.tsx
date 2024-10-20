@@ -2,6 +2,8 @@
 import { signIn, signOut } from "next-auth/react";
 import styles from "./AuthButtons.module.css";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 declare global {
   interface Window {
@@ -35,19 +37,18 @@ export function SignOutButton() {
 export function SignInButton() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
   return (
     <button
-      onClick={() =>
-        // signIn(undefined, { callbackUrl: "/asd/asds" })
-        router.push("/signin?callback=" + pathname)
-      }
+      className={styles.login}
+      onClick={() => router.push("/signin?callback=" + pathname)}
     >
-      Sign in
+      {t("sign_in")}
     </button>
   );
 }
 
-export function Providers({
+export function AuthProviders({
   providers,
 }: {
   providers: { bot_id?: string; google: boolean };
@@ -60,9 +61,9 @@ export function Providers({
     <>
       <hr className={styles.providersAfter} />
       <div className={styles.providers}>
-        {providers.google ? (
+        {providers.google && (
           <GoogleSignIn callbackPath={searchParams.get("callback") || "/"} />
-        ) : null}
+        )}
         <TelegramSignIn
           bot_id={providers.bot_id}
           callback={searchParams.get("callback") || "/"}

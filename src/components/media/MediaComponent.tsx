@@ -3,17 +3,43 @@ import styles from "./MediaComponent.module.css";
 import { IDetailsMovie, IDetailsTv } from "@/interfaces/media";
 import tmdbService from "@/services/tmdb-service";
 import StarRating from "./StarRating";
-import Link from "next/link";
+import { auth } from "@/services/auth-service";
+import SubtitlesSection from "./SubtitlesSection";
+import React from "react";
+import { ButtonSection } from "../library/buttons/ButtonSection";
+import initTranslations from "@/commons/i18n";
 
 const MediaComponent: React.FC<{
   media: IDetailsTv | IDetailsMovie;
-}> = function ({ media }) {
-  let { title, year, originalTitle, runtime } =
+  type: "movie" | "tv";
+  seasonIndex?: string;
+  episodeIndex?: string;
+  showModal?: "idioms" | "phrases" | "words" | undefined;
+  locale: string;
+}> = async function ({
+  media,
+  type,
+  seasonIndex,
+  episodeIndex,
+  showModal,
+  locale,
+}) {
+  const session = await auth();
+  const { t } = await initTranslations(locale, ["media"]);
+  const { title, year, originalTitle, runtime } =
     tmdbService.getUnitMediaFields(media);
+
+  const buttonSection = (
+    <ButtonSection
+      userId={session.user.id}
+      mediaId={media.id}
+      mediaType={type}
+    />
+  );
 
   return (
     <>
-      <div className={styles.backdrop}>
+      <div className={styles.backgroundImage}>
         <PosterImg
           backdropPath={media.backdrop_path}
           fallbackSrc={false}
@@ -44,16 +70,16 @@ const MediaComponent: React.FC<{
             <StarRating rate={media.vote_average} multi={true} />
             <div>
               <div>
-                {"rate"}: {Math.floor(media.vote_average * 10) / 10}
+                {t("rate")}: {Math.floor(media.vote_average * 10) / 10}
               </div>
               <div>
-                {"voteCount"}: {media.vote_count}
+                {t("voteCount")}: {media.vote_count}
               </div>
             </div>
           </div>
           {runtime && (
             <div>
-              {runtime} {"min"}
+              {runtime} {t("min")}
             </div>
           )}
         </div>
@@ -66,11 +92,19 @@ const MediaComponent: React.FC<{
               year={year}
               genres={media.genres.map((g) => g.name).join(", ")}
             />
+            <br />
+            <div>{media.overview || t("no_overview")}</div>
           </div>
-          <br />
-          <div>
-            <div>{media.overview}</div>
-          </div>
+          {buttonSection}
+          <SubtitlesSection
+            userId={session.user.id}
+            media={media}
+            originalName={originalTitle}
+            type={type}
+            seasonIndex={seasonIndex}
+            episodeIndex={episodeIndex}
+            showModal={showModal}
+          />
         </div>
       </div>
     </>
@@ -86,12 +120,14 @@ const TytlePart: React.FC<{
 }> = ({ title, originalTitle, tagLine, year, genres }) => {
   return (
     <>
-      <h1>{title}</h1>
+      <div>
+        <h1>{title}</h1>
+      </div>
       <h4>{originalTitle}</h4>
       <br />
       {tagLine && <blockquote>`{tagLine}`</blockquote>}
-      <div>{year}</div>
-      <div>{genres}</div>
+      <div>{year || null}</div>
+      <div>{genres || null}</div>
     </>
   );
 };

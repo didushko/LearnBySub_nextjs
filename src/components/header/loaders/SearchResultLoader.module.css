@@ -1,0 +1,113 @@
+.loading {
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(150, 150, 150, 0.1),
+    transparent
+  );
+  background-size: 400%;
+  background-position: 0%;
+  position: relative;
+  overflow: hidden;
+  transition: width 700ms, height 700ms, margin 700ms, box-shadow 400ms;
+  animation: shimmer 2s infinite;
+}
+
+.title {
+  text-align: center;
+  margin: 1%;
+  align-items: center;
+  font-size: medium;
+  width: 50%;
+  height: 100%;
+}
+
+.text {
+  height: 1em;
+  margin: 2%;
+  min-width: 80px;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(150, 150, 150, 0.1),
+    transparent
+  );
+  border-radius: 5px;
+  background-size: 400%;
+  background-position: 0%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}
+
+.loadingContainer {
+  animation: snakeAnimation 1.4s linear infinite;
+  --1: 255, 255, 255;
+  --2: 255, 255, 0;
+  --3: 255, 165, 0;
+  --4: 135, 206, 250;
+  --5: 0, 128, 0;
+}
+@keyframes snakeAnimation {
+  0% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--1), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--2), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--3), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--4), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--5), var(--capacity));
+  }
+  20% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--5), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--1), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--2), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--3), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--4), var(--capacity));
+  }
+  40% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--4), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--5), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--1), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--2), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--3), var(--capacity));
+  }
+  60% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--3), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--4), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--5), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--1), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--2), var(--capacity));
+  }
+  80% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--2), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--3), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--4), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--5), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--1), var(--capacity));
+  }
+  100% {
+    box-shadow: 0 0px 0px 1px rgba(255, 255, 255, 0.2),
+      0 0px 0px 5px rgba(0, 0, 0, 0.7),
+      0 6px 10px 0px rgba(var(--1), var(--capacity)),
+      6px -6px 8px 0px rgba(var(--2), var(--capacity)),
+      -8px 4px 8px -0px rgba(var(--3), var(--capacity)),
+      -12px -8px 8px 0px rgba(var(--4), var(--capacity)),
+      10px 2px 8px 0px rgba(var(--5), var(--capacity));
+  }
+}

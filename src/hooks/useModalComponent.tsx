@@ -4,9 +4,6 @@ import Modal from "@/components/common/Modal";
 
 const useModalComponent = (nonDropClass?: string, defultVisible?: boolean) => {
   const [modalVisible, setModalVisible] = useState(defultVisible || false);
-  if (!nonDropClass) {
-    nonDropClass = "nonDropClassUseModalComponent";
-  }
   const dropCallback = useRef<Function>();
   const newDropCallback = () => {
     setModalVisible(false);
@@ -15,20 +12,20 @@ const useModalComponent = (nonDropClass?: string, defultVisible?: boolean) => {
     }
   };
   useEffect(() => {
-    const handleClick = (e: any) => {
-      if (!e.target.closest("." + nonDropClass)) {
-        newDropCallback();
-      }
-    };
     if (nonDropClass && modalVisible) {
+      const handleClick = (e: any) => {
+        if (e.target && !e.target.closest("." + nonDropClass)) {
+          newDropCallback();
+        }
+      };
       setTimeout(
         () => window.addEventListener("click", handleClick, true),
         200
       );
+      return () => {
+        window.removeEventListener("click", handleClick, true);
+      };
     }
-    return () => {
-      window.removeEventListener("click", handleClick, true);
-    };
   }, [modalVisible, nonDropClass]);
 
   const ModalComponent = useCallback(

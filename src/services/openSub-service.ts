@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import OpensubError from "@/exceptions/opensubError";
-import { IFeature } from "../interfaces/feature";
+import { ITvshow, Season } from "../interfaces/feature";
+import ISubtitle from "@/interfaces/subtitle";
 
 export interface ISubQuery {
   query: string;
@@ -52,38 +53,73 @@ class OpenSubService {
     return OpenSubService.instance;
   }
 
-  async subtitlesQuery(query: ISubQuery) {
-    let response = (
-      await this.subAxios.get("/subtitles", {
-        params: query,
-      })
-    ).data;
-    return response;
-  }
-
-  async featuresQuery(query: IFeaturesQuery): Promise<{ data: IFeature[] }> {
+  async getSub(
+    tmdbId: string,
+    type: "Episode" | "Movie",
+    originalName: string,
+    selectedSeason: string | undefined,
+    selectedEpisode: string | undefined
+  ) {
     try {
-      let response = (
-        await this.subAxios.get("/features", {
-          params: query,
+      const findedFeature = await this.getFeatureByTmdbId(tmdbId, originalName);
+      if (!findedFeature) {
+        throw OpensubError.NoSubsFined();
+      }
+      let subtitles: { data: ISubtitle[] } = (
+        await this.subAxios.get("/subtitles", {
+          params: {
+            [type === "Movie" ? "feature_id" : "parent_feature_id"]:
+              findedFeature.attributes.feature_id,
+            type,
+            ai_translated: "exclude",
+            languages: "en",
+            foreign_parts_only: "exclude",
+            hearing_impaired: "exclude",
+            trusted_sources: true,
+            season_number: selectedSeason,
+            episode_number: selectedEpisode,
+          },
         })
       ).data;
-      return response;
-    } catch (e: any | AxiosError) {
-      console.error(e);
-      if (e instanceof AxiosError) {
-        throw new OpensubError(e.response?.status, e.message, e);
+      if (subtitles.data.length > 0) {
+        return subtitles.data[0];
+      } else {
+        throw OpensubError.NoSubsFined();
       }
-      throw OpensubError.unexpectError(e.message);
+    } catch (e) {
+      console.log("Error when get sub", e);
+      throw OpensubError.NoSubsFined();
     }
   }
 
-  async getFeatureById(feature_id: number) {
-    let result = await this.featuresQuery({ feature_id });
-    if (result && result.data.length === 1) {
-      return result.data[0];
+  async getFeatureByTmdbId(tmdb_id: number | string, originalName: string) {
+    let result: ITvshow[] = (
+      await this.subAxios.get("/features", {
+        params: { tmdb_id: tmdb_id.toString(), type: "tvshow" },
+      })
+    ).data.data;
+    if (result && result.length > 0) {
+      let finded = result.find(
+        (el) =>
+          el.attributes.original_title.toLowerCase() ===
+          originalName.toLowerCase()
+      );
+      return finded;
     }
-    return {};
+  }
+
+  async getSeasons(
+    tmdb_id: number,
+    originalName: string
+  ): Promise<Season[] | undefined> {
+    const finded = await this.getFeatureByTmdbId(tmdb_id, originalName);
+    if (finded) {
+      const filtered = finded.attributes.seasons.filter(
+        (s) => s.episodes.length > 0
+      );
+      if (filtered.length > 0) return filtered;
+    }
+    return undefined;
   }
 
   async discoverPopular(query?: IDiscover) {
@@ -135,16 +171,46 @@ class OpenSubService {
     }
   }
 
-  async downloadSubs(fileId: number): Promise<string> {
+  async download(fileId: number): Promise<string> {
     try {
       const res = await this.subAxios.post("/download", {
         file_id: fileId,
       });
-      const subs = await axios.get(res.data.link);
-      return subs.data.toString();
+      if (res.data.remaining === 0) {
+        throw OpensubError.NoRemaining(res.data.reset_time);
+      }
+      const sub = await axios.get(res.data.link, {
+        headers: {
+          Accept: "text/plain",
+          "User-Agent": "LearnSub 1.0",
+        },
+      });
+      return sub.data;
     } catch (e: any) {
       throw OpensubError.downloadError(e);
     }
+  }
+
+  async getSubText(
+    tmdbId: string,
+    type: "tv" | "movie",
+    originalName: string,
+    season: string | undefined,
+    episode: string | undefined
+  ) {
+    const sub = await this.getSub(
+      tmdbId,
+      type === "movie" ? "Movie" : "Episode",
+      originalName,
+      season,
+      episode
+    );
+    if (!sub || sub.attributes.files.length < 1) {
+      throw OpensubError.NoSubsFined();
+    }
+    const fileId = sub.attributes.files[0].file_id;
+    const subText = await this.download(fileId);
+    return subText;
   }
 }
 

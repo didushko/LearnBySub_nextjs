@@ -5,7 +5,7 @@ import styles from "./Profile.Button.module.css";
 import { SignInButton } from "../auth/AuthButtons";
 
 const ProfileButton = async () => {
-  const session = await auth();
+  const session = await auth(true);
   if (session) {
     return (
       <Link href={"/profile"} className={styles.link}>

@@ -72,7 +72,10 @@ class TMDBService {
     }
   }
 
-  async getMovieDetails(id: number, language?: string): Promise<IDetailsMovie> {
+  async getMovieDetails(
+    id: number | string,
+    language?: string
+  ): Promise<IDetailsMovie> {
     try {
       const res = await this.subAxios.get(`/movie/${id}`, {
         params: {
@@ -89,7 +92,10 @@ class TMDBService {
     }
   }
 
-  async getTvDetails(id: number, language?: string): Promise<IDetailsTv> {
+  async getTvDetails(
+    id: number | string,
+    language?: string
+  ): Promise<IDetailsTv> {
     try {
       const res = await this.subAxios.get(`/tv/${id}`, {
         params: {
@@ -116,8 +122,12 @@ class TMDBService {
       const res = await this.subAxios.get(`/search/multi`, {
         params,
       });
+      res.data.results = res.data.results.filter(
+        (e: any) => e.media_type == "movie" || e.media_type == "tv"
+      );
       return res.data;
     } catch (e) {
+      console.log(e);
       if (e instanceof AxiosError) {
         throw TmdbError.unexpectError(e.message);
       }
@@ -141,7 +151,7 @@ class TMDBService {
     }
   }
 
-  getDetails(type: "tv" | "movie", id: number, language: string) {
+  getDetails(type: "tv" | "movie", id: number | string, language: string) {
     if (type == "movie") {
       return this.getMovieDetails(id, language);
     } else {
@@ -151,25 +161,21 @@ class TMDBService {
 
   getUnitMediaFields(media: IDetailsTv | IDetailsMovie | ITv | IMovie): {
     title: string;
-    year?: number;
+    year: number;
     originalTitle: string;
     runtime?: number;
   } {
     if (Object.hasOwn(media, "name")) {
       let tvmedia = media as unknown as IDetailsTv;
       const title = tvmedia.name;
-      const year = tvmedia.first_air_date
-        ? new Date(tvmedia.first_air_date).getFullYear()
-        : undefined;
+      const year = new Date(tvmedia.first_air_date).getFullYear();
       const originalTitle = tvmedia.original_name;
       const runtime = tvmedia.episode_run_time?.[0] || undefined;
       return { title, year, originalTitle, runtime };
     } else {
       media = media as IDetailsMovie;
       const title = media.title;
-      const year = media.release_date
-        ? new Date(media.release_date).getFullYear()
-        : undefined;
+      const year = new Date(media.release_date).getFullYear();
       const originalTitle = media.original_title;
       const runtime = media.runtime;
       return { title, year, originalTitle, runtime };

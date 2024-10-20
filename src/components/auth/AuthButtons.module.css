@@ -58,3 +58,18 @@
     transform: translateX(-50%);
   }
 }
+
+.login {
+  display: inline-block;
+  padding: 10px 50px;
+  width: min-content;
+  background-color: rgb(var(--blueUk), 0.7);
+  color: rgba(var(--yellowUk), 0.6);
+  border-radius: 10px;
+  border: thin solid #888;
+  box-shadow: 0px 0px 7px rgba(var(--yellowUk), 0.4);
+  white-space: nowrap;
+  &:hover {
+    cursor: pointer;
+  }
+}

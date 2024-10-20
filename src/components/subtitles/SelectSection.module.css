@@ -1,0 +1,63 @@
+.section {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  margin: 20px;
+  padding: 10px;
+}
+
+.button {
+  display: flex;
+  width: 70%;
+  padding: 20px;
+  justify-content: space-between;
+  cursor: pointer;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(var(--yellowUk), 0.5);
+  background-color: linear-gradient(
+    to right,
+    rgba(var(--blueUk), 0.9) var(--percentage),
+    rgba(var(--blueUk), 0.3) var(--percentage)
+  );
+}
+
+.button:focus {
+  box-shadow: 0px 0px 10px rgba(var(--blueUk), 0.5);
+}
+.idioms {
+  --percentage: 50%;
+  position: relative;
+  background-size: 100% 100%, 20px 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-shadow: 0px 0px 5px blue;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    background-position: 100%;
+  }
+  50% {
+    transform: scale(1.01);
+    background-position: 50%;
+  }
+  100% {
+    transform: scale(1);
+    background-position: 0%;
+  }
+}
+
+.loading {
+  background: linear-gradient(
+    to right,
+    rgba(var(--blueUk), 0.3) 30%,
+    rgba(var(--blueUk), 0.9) 45% 55%,
+    rgba(var(--blueUk), 0.3) 70% 100%
+  );
+  background-size: 200%;
+  background-position: -50%;
+  animation: pulse 1s infinite ease-in-out;
+}

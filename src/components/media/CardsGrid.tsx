@@ -1,32 +1,23 @@
 import Card from "./Card";
-import { IMovie, ITv } from "@/interfaces/media";
 import styled from "./Card.module.css";
 import tmdbService from "@/services/tmdb-service";
-import GridCardLoader from "../loaders/GridCardLodader";
-import { Suspense } from "react";
 
 interface ICardGrid {
   type: "movie" | "tv";
-  discover: "popular" | "top_rated" | "trend_day" | "trend_week";
+  discover: "top_rated" | "trend_day" | "trend_week" | "popular";
+  locale: string;
 }
 
-const CardsGrid = async ({ type, discover }: ICardGrid) => {
+const CardsGrid = async ({ type, discover, locale }: ICardGrid) => {
   try {
-    const data = (await tmdbService.discoverRequest(type, discover, "en"))
+    const data = (await tmdbService.discoverRequest(type, discover, locale))
       .results;
-
-    // return <GridCardLoader />;
     return (
-      <Suspense
-        key={"GridCard" + type + discover}
-        fallback={<GridCardLoader />}
-      >
-        <div className={styled.cardGrid}>
-          {data.map((el) => (
-            <Card key={el.id} media={el} type={type} />
-          ))}
-        </div>
-      </Suspense>
+      <div className={styled.cardGrid}>
+        {data.map((el, i) => (
+          <Card key={el.id} media={el} type={type} index={i} />
+        ))}
+      </div>
     );
   } catch (e) {
     ///TODO normal error

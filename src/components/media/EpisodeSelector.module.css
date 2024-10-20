@@ -1,0 +1,23 @@
+.selector {
+  color: white;
+  background: transparent;
+  padding: 20px;
+  width: 350px;
+}
+.section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 65%;
+  margin: auto;
+  padding: 10px;
+  gap: 20px;
+}
+
+.section > select,
+.section > option {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

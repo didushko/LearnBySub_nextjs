@@ -14,10 +14,12 @@ export async function signInAction(formData: FormData) {
         e.cause?.err instanceof ApiError ||
         e.cause?.err instanceof ZodError
       ) {
-        return e.cause?.err?.errors;
+        return e.cause?.err?.errors || e.cause.err.message
+          ? { message: e.cause.err.message }
+          : { message: "Unexpected error" };
       }
-      return { message: "Unexpected error" };
+      return { message: e.message };
     }
-    throw e;
+    return { message: "Unexpected error" };
   }
 }

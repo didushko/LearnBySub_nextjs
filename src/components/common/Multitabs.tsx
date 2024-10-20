@@ -1,8 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./Multitabs.module.css";
-import { useState } from "react";
-
+import { useTranslation } from "react-i18next";
 export interface TabOptions {
   value: string;
   label: string;
@@ -14,11 +13,10 @@ const Multitabs = ({
   tabs: TabOptions[];
   paramName: string;
 }) => {
+  const {t} = useTranslation("home")
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-  const [state, setState] = useState();
-
   const setParams = (value: string) => {
     const params = new URLSearchParams(searchParams);
     if (value) {
@@ -46,14 +44,14 @@ const Multitabs = ({
           key={el.value}
           className={getClassName(el.value, i)}
           onClick={(e) => {
-            const value = i === 0 ? "" : el.value;
-            if (searchParams.get(paramName)!==value){
-              e.currentTarget.classList.add(styles.loading)
-            } 
-            setParams(i === 0 ? "" : el.value);
+            const value = el.value;
+            if (searchParams.get(paramName) !== value) {
+              e.currentTarget.classList.add(styles.loading);
+            }
+            setParams(el.value);
           }}
         >
-          {el.label}
+          {t(el.label)}
         </div>
       ))}
     </div>

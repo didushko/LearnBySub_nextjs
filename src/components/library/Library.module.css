@@ -1,0 +1,20 @@
+.library {
+  height: calc(100vh - var(--header-height) - var(--footer_height));
+}
+
+.libraryList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 5px;
+  height: -webkit-fill-available;
+  min-height: 30%;
+  max-height: 90%;
+  overflow: scroll;
+}
+@media (max-width: 850px) {
+  .library {
+    height: calc(100vh - var(--header-height));
+  }
+}
