@@ -3,6 +3,7 @@
 ## Status
 
 🚧 **In Progress**: The main functionality is not ready yet.
+
 **Live Demo**: A link to the live version of the project will be available here once the project is ready for production.
 
 **Technologies**: Next.js, React, TypeScript, Node.js
@@ -55,12 +56,12 @@ For correct authentication to work locally, you need to:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/learnbysub.git
+    git clone https://github.com/your-username/learnbysub.git
    ```
 
 2. Navigate into the project directory:
    ```bash
-   cd learnbysub
+    cd learnbysub
    ```
 3. Create an .env.local file in the root directory with the following environment variables:
 
@@ -72,7 +73,7 @@ For correct authentication to work locally, you need to:
 
     # Settings
 
-    HOSTURL=your-host-url # (For local, use the custom domain from your hosts file)
+    HOSTURL=your-host-url # use the custom domain from your hosts file
 
     # Integrations
 
@@ -94,12 +95,12 @@ For correct authentication to work locally, you need to:
 
 4. Install dependencies:
 
-```bash
-npm install
+   ```bash
+    npm install
 
-```
+   ```
 
 5. Run the development server:
    ```bash
-   sudo npm run dev
+    npm run dev
    ```
