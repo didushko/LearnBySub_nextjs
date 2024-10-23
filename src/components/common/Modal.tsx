@@ -3,12 +3,14 @@ import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import styles from "./Modal.module.css";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface IModal {
   children?: React.ReactNode;
   visible?: boolean;
   dropCallback?: Function;
   backdropeStyleClass?: string;
+  addIdToFocus?: string[];
 }
 
 const Modal = ({
@@ -16,6 +18,7 @@ const Modal = ({
   visible = false,
   dropCallback,
   backdropeStyleClass,
+  addIdToFocus,
   ...rest
 }: IModal &
   React.DetailedHTMLProps<
@@ -23,6 +26,7 @@ const Modal = ({
     HTMLDivElement
   >) => {
   const [mounted, setMounted] = useState(false);
+  useFocusTrap(["modalContent", ...(addIdToFocus || [])], mounted);
 
   useEffect(() => {
     setMounted(true);
@@ -52,14 +56,14 @@ const Modal = ({
       <div {...rest}>
         <div className={backdropeStyleClass} onClick={backDropHandle}>
           <div
-            className={styles.modalContent}
-            tabIndex={0}
+            id="modalContent"
             onKeyUp={(e) => {
+              console.log("ads");
               if (e.key == "Escape") {
                 backDropHandle();
               }
             }}
-            autoFocus={true}
+            className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
             {children}

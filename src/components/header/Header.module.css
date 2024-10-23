@@ -34,18 +34,16 @@
 
   backdrop-filter: blur(5px);
   background-color: var(--header-main-color);
-
 }
 
 .headerElements {
   height: var(--header-height);
-  display: grid;
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
-  grid-template-columns: 3fr 1fr 1fr;
+  gap: 5%;
   align-items: center;
-  justify-items: center;
   margin: 0;
-  padding: 0 2% 0 2%;
 }
 
 @media (max-width: 300px) {

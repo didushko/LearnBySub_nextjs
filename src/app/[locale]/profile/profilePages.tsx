@@ -15,25 +15,25 @@ export const profileStructure: IProfileStructure = {
       new Promise((resolve) => setTimeout(resolve, 5000)).then(() => (
         <div>Statistics page</div>
       )),
-    suspense: () => <div>suspense</div>,
+    suspense: () => <div>suspense Statistics</div>,
   },
   languages: {
     name: "Languages",
     component: () => <div>Languages page</div>,
 
-    suspense: () => <div>suspense</div>,
+    suspense: () => <div>suspense Languages</div>,
   },
   contacts: {
     name: "Contacts",
     component: () => <div>Contacts page</div>,
 
-    suspense: () => <div>suspense</div>,
+    suspense: () => <div>suspense Contacts</div>,
   },
   links: {
     name: "Links",
     component: () => <div>Links page</div>,
 
-    suspense: () => <div>suspense</div>,
+    suspense: () => <div>suspense Links</div>,
   },
 };
 

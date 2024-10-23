@@ -1,20 +1,31 @@
 .link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
+  max-width: 200px;
+  /* border-bottom: 1px solid transparent; */
+  padding: 0px 10px;
 }
 .image {
   border-radius: 50%;
   transition: 0.2s height ease, 1s width ease;
 }
-.link:hover > .image {
+/* .link:hover > .image {
   height: 47px;
   width: 47px;
-}
+} */
 .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  white-space: nowrap;
   transition: 0.2s font-size ease;
 }
 
-.link:hover > .name {
-  font-size: large;
+.link:hover {
+  padding: 0px 10px;
+  /* border: 1px solid rgba(174, 174, 174, 0.2); */
+  border-radius: 15px;
+  box-shadow: inset 0px 0px 15px 1px rgba(var(--blueUk), 0.1),
+    0px 0px 15px 1px rgba(var(--blueUk), 0.1);
 }

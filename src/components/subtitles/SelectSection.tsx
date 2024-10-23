@@ -5,6 +5,20 @@ import style from "./SelectSection.module.css";
 import Link from "next/link";
 import Play from "./play/Play";
 import { DownloadCashButton } from "../library/buttons/DownloadCashButton";
+import { Suspense } from "react";
+import SelectSectionLoader from "./loaders/SelectSectionLoader";
+
+interface ISelectSectionProps {
+  userId: string;
+  mediaId: number;
+  mediaType: "tv" | "movie";
+  originalName: string;
+  seasonNumber?: string;
+  episodeNumber?: string;
+  seasonIndex?: string;
+  episodeIndex?: string;
+  showModal: "idioms" | "phrases" | "words" | undefined;
+}
 
 export async function SelectSection({
   userId,
@@ -16,17 +30,7 @@ export async function SelectSection({
   seasonIndex,
   episodeIndex,
   showModal,
-}: {
-  userId: string;
-  mediaId: number;
-  mediaType: "tv" | "movie";
-  originalName: string;
-  seasonNumber?: string;
-  episodeNumber?: string;
-  seasonIndex?: string;
-  episodeIndex?: string;
-  showModal: "idioms" | "phrases" | "words" | undefined;
-}) {
+}: ISelectSectionProps) {
   let id = mediaId.toString();
   if (mediaType === "tv") {
     if (!seasonNumber || !episodeNumber) {
@@ -104,6 +108,14 @@ export async function SelectSection({
     </section>
   );
 }
+
+const SelectSectionWithSuspense = async (args: ISelectSectionProps) => (
+  <Suspense key={args.toString()} fallback={<SelectSectionLoader />}>
+    <SelectSection {...args} />
+  </Suspense>
+);
+
+export default SelectSectionWithSuspense;
 
 function getStats(
   stats: any,

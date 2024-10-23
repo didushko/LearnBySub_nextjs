@@ -7,7 +7,7 @@ import PosterImage from "./PosterImg";
 import TruncatedText from "../common/TruncatedText";
 import StarRating from "./StarRating";
 import FlagImg from "../common/FlagImg";
-import { getCountryCode, subLanguages } from "@/languages/subLanguages";
+import { getCountryCode } from "@/languages/subLanguages";
 
 const Card = function ({
   media,
@@ -35,9 +35,7 @@ const Card = function ({
           priority={index < 0}
         />
         <div className={styles.title}>
-          <Suspense fallback={<div>{title}</div>}>
-            <TruncatedText>{title}</TruncatedText>
-          </Suspense>
+          <TruncatedText>{title}</TruncatedText>
           <div>{year || null}</div>
         </div>
       </div>

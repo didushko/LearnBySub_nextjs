@@ -4,8 +4,13 @@ import PaginationBar from "../common/PaginationBar";
 import { auth } from "@/services/auth-service";
 import style from "./Library.module.css";
 import LibraryElement from "./LibraryElement";
+import { Suspense } from "react";
 
-export default async function Library({ pageNumber }: { pageNumber: number }) {
+interface ILibraryProps {
+  pageNumber: number;
+}
+
+async function Library({ pageNumber }: { pageNumber: number }) {
   const session = await auth();
   const libraryPaginations = await libraryService.getLibraryItemsById(
     session.user.id,
@@ -38,3 +43,11 @@ export default async function Library({ pageNumber }: { pageNumber: number }) {
     </div>
   );
 }
+
+const LibraryWithSuspense = async (args: ILibraryProps) => (
+  <Suspense key={args.toString()} fallback={<div>loading</div>}>
+    <Library {...args} />
+  </Suspense>
+);
+
+export default LibraryWithSuspense

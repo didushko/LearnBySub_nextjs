@@ -24,7 +24,7 @@ export default function Form({
         "There was a problem when trying to authenticate. Please contact us if this error persists"
       );
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (errors && Array.isArray(errors)) {

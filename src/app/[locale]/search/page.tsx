@@ -1,4 +1,4 @@
-import SearchResult from "@/components/header/search/SearchResult";
+import SearchResult from "@/components/search/SearchResult";
 
 export default function Search({
   params,
@@ -11,7 +11,8 @@ export default function Search({
     <>
       <div>Тут будуть якісь фільри</div>
       <SearchResult
-        query={searchParams["search"] || ""}
+        query={searchParams.query || ""}
+        searchParams={searchParams}
         locale={params.locale}
       />
     </>

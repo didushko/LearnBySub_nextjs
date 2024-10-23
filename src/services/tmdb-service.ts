@@ -115,15 +115,35 @@ class TMDBService {
   async search(params: {
     query: string;
     adult: boolean;
+    searchParams?: { [key: string]: string | undefined };
+    language: string;
+    page: number;
+  }): Promise<IApiResponse<SearchResultsType>> {
+    const res = await this._search(params);
+    while (res.results.length < 20 && res.page <= res.total_pages) {
+      console.log("research");
+      const res2 = await this._search({ ...params, ...{ page: ++res.page } });
+      res.results.push(...res2.results);
+    }
+    return res;
+  }
+
+  private async _search(params: {
+    query: string;
+    adult: boolean;
+    searchParams?: { [key: string]: string | undefined };
     language: string;
     page: number;
   }): Promise<IApiResponse<SearchResultsType>> {
     try {
-      const res = await this.subAxios.get(`/search/multi`, {
-        params,
-      });
-      res.data.results = res.data.results.filter(
-        (e: any) => e.media_type == "movie" || e.media_type == "tv"
+      const res = await this.subAxios.get<IApiResponse<SearchResultsType>>(
+        `/search/multi`,
+        {
+          params,
+        }
+      );
+      res.data.results = res.data.results.filter((media) =>
+        filterSearch(media, params.searchParams)
       );
       return res.data;
     } catch (e) {
@@ -184,3 +204,82 @@ class TMDBService {
 }
 
 export default TMDBService.getInstance();
+
+function filterSearch(
+  media: SearchResultsType,
+  searchParams?: { [key: string]: string | undefined }
+): boolean {
+  try {
+    if (searchParams) {
+      const filters = [
+        () => typeFilter(media, searchParams["type"]),
+        () => minYearFilter(media, searchParams["min_year"]),
+        () => maxYearFilter(media, searchParams["max_year"]),
+        () => minRatingFilter(media, searchParams["min_rating"]),
+        () => maxRatingFilter(media, searchParams["max_rating"]),
+        () => minVotesFilter(media, searchParams["min_votes"]),
+        () => maxVotesFilter(media, searchParams["max_votes"]),
+        () => containGenresFilter(media, searchParams["genres"]),
+      ];
+
+      return filters.every((filter) => filter());
+    } else {
+      return typeFilter(media);
+    }
+  } catch (e) {
+    return false;
+  }
+}
+
+function typeFilter(media: SearchResultsType, type?: string): boolean {
+  if (type) {
+    return media.media_type === type;
+  }
+  return media.media_type === "movie" || media.media_type === "tv";
+}
+
+function minYearFilter(media: SearchResultsType, minYear?: string): boolean {
+  const year =
+    media.media_type == "movie"
+      ? new Date(media.release_date).getFullYear()
+      : new Date(media.first_air_date).getFullYear();
+  return minYear && !isNaN(year) ? Number(minYear) <= Number(year) : true;
+}
+function maxYearFilter(media: SearchResultsType, maxYear?: string): boolean {
+  const year =
+    media.media_type == "movie"
+      ? new Date(media.release_date).getFullYear()
+      : new Date(media.first_air_date).getFullYear();
+  return maxYear && !isNaN(year) ? Number(maxYear) >= Number(year) : true;
+}
+
+function minRatingFilter(
+  media: SearchResultsType,
+  minRating?: string
+): boolean {
+  return minRating ? Number(minRating) <= Number(media.vote_average) : true;
+}
+
+function maxRatingFilter(
+  media: SearchResultsType,
+  maxRating?: string
+): boolean {
+  return maxRating ? Number(maxRating) >= Number(media.vote_average) : true;
+}
+
+function minVotesFilter(media: SearchResultsType, minVotes?: string): boolean {
+  return minVotes ? Number(minVotes) <= Number(media.vote_count) : true;
+}
+
+function maxVotesFilter(media: SearchResultsType, maxVotes?: string): boolean {
+  return maxVotes ? Number(maxVotes) >= Number(media.vote_count) : true;
+}
+
+function containGenresFilter(
+  media: SearchResultsType,
+  genres?: string
+): boolean {
+  if (!genres) return true;
+  const genreIds = genres.split(",").map(Number);
+  return media.genre_ids.some((id) => genreIds.includes(id));
+}

@@ -1,8 +1,7 @@
 import styles from "./page.module.css";
 import Multitabs from "@/components/common/Multitabs";
 import CardsGrid from "@/components/media/CardsGrid";
-import GridCardLoader from "@/components/media/Loaders/GridCardLodader";
-import React, { Suspense } from "react";
+import React from "react";
 
 import TranslationsProvider from "@/components/providers/TranslationsProvider";
 import initTranslations from "@/commons/i18n";
@@ -59,16 +58,11 @@ export default async function Home({
           paramName="discover"
         />
       </div>
-      <Suspense
-        key={"GridCard" + searchParams?.type + searchParams?.discover}
-        fallback={<GridCardLoader />}
-      >
-        <CardsGrid
-          locale={params.locale}
-          type={searchParams?.type || typesList[0]}
-          discover={searchParams?.discover || discoverList[0]}
-        />
-      </Suspense>
+      <CardsGrid
+        locale={params.locale}
+        type={searchParams?.type || typesList[0]}
+        discover={searchParams?.discover || discoverList[0]}
+      />
     </TranslationsProvider>
   );
 }

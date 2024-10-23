@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { TMDB_IMAGE } from "@/constants";
+import { TMDB_IMAGE_HOST } from "@/constants";
 
 interface ImageProps {
   posterPath?: string;
@@ -22,7 +22,6 @@ function getPosterSize(size: string | number) {
   return founded ? "w" + founded : "original";
 }
 
-
 const defaultSrc = "/no-poster.png";
 export default function PosterImage({
   posterPath,
@@ -34,11 +33,11 @@ export default function PosterImage({
   backdropSize = "original",
 }: ImageProps) {
   const poster_full =
-    (posterPath && `${TMDB_IMAGE}/${getPosterSize(sizes)}${posterPath}`) ||
-    (backdropPath && `${TMDB_IMAGE}/${backdropSize}${backdropPath}`);
+    (posterPath && `${TMDB_IMAGE_HOST}/${getPosterSize(sizes)}${posterPath}`) ||
+    (backdropPath && `${TMDB_IMAGE_HOST}/${backdropSize}${backdropPath}`);
   const poster_small =
-    (posterPath && `${TMDB_IMAGE}/w92${posterPath}`) ||
-    (backdropPath && `${TMDB_IMAGE}/w300${backdropPath}`);
+    (posterPath && `${TMDB_IMAGE_HOST}/w92${posterPath}`) ||
+    (backdropPath && `${TMDB_IMAGE_HOST}/w300${backdropPath}`);
 
   if (!posterPath && !backdropPath && fallbackSrc === false) {
     return null;

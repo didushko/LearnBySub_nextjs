@@ -26,7 +26,7 @@ export default async function LibraryElement({
       href={`media/${type}/${media.id}`}
       className={styles.linkContainer}
     >
-      <div className={styles.element}>
+      <div className={styles.element} tabIndex={0}>
         <div className={styles.mediaInfo}>
           <div className={styles.imageContainer}>
             <PosterImg
@@ -42,7 +42,6 @@ export default async function LibraryElement({
             <div className={styles.text}>{type}</div>
           </div>
         </div>
-        {/* <div style={{ zIndex: 2 }}> */}
         <FavoriteButton
           userId={userId}
           itemId={id.toString()}
@@ -58,7 +57,6 @@ export default async function LibraryElement({
           backdropSize="w780"
         />
       </div>
-      {/* </div> */}
     </Link>
   );
 }

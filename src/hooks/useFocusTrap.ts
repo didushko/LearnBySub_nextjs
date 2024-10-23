@@ -1,43 +1,57 @@
 import { useEffect } from "react";
 
-export function useFocusTrap(className: string, deps: any[]): void {
+export const useFocusTrap = (elementIds: string[], isOpen?: boolean) => {
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Знайти всі елементи з вказаним класом
-      const containers = document.querySelectorAll(`.${className}`);
-      containers.forEach((container) => {
-        const focusableElements = container.querySelectorAll<HTMLElement>(
-          'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusableElements.length === 0) return;
+    const trapFocus = (event: KeyboardEvent) => {
+      const focusableElements: HTMLElement[] = elementIds.reduce(
+        (acc: HTMLElement[], id: string) => {
+          const element = document.getElementById(id);
+          if (element) {
+            const focusables = Array.from(
+              element.querySelectorAll<HTMLElement>(
+                'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
+              )
+            );
+            acc.push(...focusables);
+          }
+          return acc;
+        },
+        []
+      );
 
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
+      if (focusableElements.length === 0) return;
 
-        if (event.key === "Tab") {
-          if (event.shiftKey) {
-            // Якщо натиснуто Shift+Tab і фокус на першому елементі
-            if (document.activeElement === firstElement) {
-              event.preventDefault();
-              lastElement.focus();
-            }
-          } else {
-            // Якщо натиснуто Tab і фокус на останньому елементі
-            if (document.activeElement === lastElement) {
-              event.preventDefault();
-              firstElement.focus();
-            }
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.key === "Tab") {
+        if (event.shiftKey) {
+          // Якщо Shift + Tab і фокус на першому елементі, переміщаємо на останній
+          if (document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Якщо Tab і фокус на останньому елементі, переміщаємо на перший
+          if (document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
           }
         }
-      });
+      }
     };
-
-    // Додаємо слухача подій до документа
-    document.addEventListener("keydown", handleKeyDown);
+    if (isOpen !== undefined) {
+      if (isOpen) {
+        document.addEventListener("keydown", trapFocus);
+      } else {
+        document.removeEventListener("keydown", trapFocus);
+      }
+    } else {
+      document.addEventListener("keydown", trapFocus);
+    }
 
     return () => {
-      // Видаляємо слухача подій при демонтуванні
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", trapFocus);
     };
-  }, [className, ...deps]); // Виконуємо при зміні className
-}
+  }, [elementIds, isOpen]);
+};

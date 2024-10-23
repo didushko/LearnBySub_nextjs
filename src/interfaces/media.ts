@@ -81,6 +81,7 @@ interface IMediaDetailsCommon extends BaseFields {
 
 interface BaseFields {
   id: number;
+  genre_ids: number[];
   backdrop_path: string;
   overview: string;
   poster_path: string;

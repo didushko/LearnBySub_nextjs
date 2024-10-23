@@ -12,18 +12,20 @@
 }
 
 .searchBarStyle {
-  display: grid;
-  grid-template-columns: 1fr 25fr 1fr;
-  grid-gap: 2%;
+  display: flex;
   height: 60%;
-  width: 100%;
   border-radius: 25px;
-  padding-left: 4%;
-  border: none;
   background-color: rgba(55, 56, 57, 0.9);
   border: 1px solid rgba(var(--blueUk), 0.3);
   z-index: 11;
   transition: box-shadow 0.1s ease;
+  align-items: center;
+  padding: 0px 10px 0px 15px;
+  margin-right: auto;
+  max-width: 50%;
+  flex-grow: 1;
+  gap: 5px;
+  transition: flex-grow 1s ease;
   &:hover {
     border: 1px solid #aeaeae;
     box-shadow: 3px 3px 10px rgba(255, 215, 0, 0.3),
@@ -72,22 +74,37 @@
   }
 }
 
-.BackDropWraper {
-  position: fixed;
-  background-color: rgba(4, 4, 4, 0.5);
-  backdrop-filter: blur(5px);
-  inset: 0;
-  top: var(--header-height);
-  align-content: center;
-  z-index: 3;
+.opacityOnHover {
+  cursor: pointer;
+  opacity: 0.4;
+  transition: transform 0.5s ease-in-out;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.hiddenIcon {
+  transform: scale(0);
 }
 
-@media (max-width: 850px) {
-  .backdropStyle {
-    top: 200px;
-  }
-
-  .BackDropWraper {
-    top: 20%;
+.loader {
+  width: 25px;
+  padding: 3px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--blueUk)) 0%,
+    rgb(var(--yellowUk)) 100%
+  );
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
   }
 }

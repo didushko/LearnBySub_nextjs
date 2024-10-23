@@ -50,6 +50,7 @@ const FavoriteButton = ({
     <div
       className={`${styles.button} ${isLoading ? styles.loading : ""}`}
       onClick={inFavorite ? handleDeleteFromFavorite : handleAddToFavorite}
+      tabIndex={0}
     >
       {inFavorite ? (
         <Image

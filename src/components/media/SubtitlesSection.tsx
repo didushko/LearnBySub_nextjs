@@ -31,26 +31,21 @@ const SubtitlesSection = async function ({
   if (type == "tv") {
     subtitles = seasons ? (
       <EpisodeSelector seasons={seasons}>
-        <Suspense
-          key={"Selection" + media.id + "s" + seasonIndex + "e" + episodeIndex}
-          fallback={<SelectSectionLoader />}
-        >
-          <SelectSection
-            userId={userId}
-            mediaId={media.id}
-            mediaType={type}
-            originalName={originalName}
-            seasonNumber={seasons[
-              Number(seasonIndex) || 0
-            ].season_number.toString()}
-            episodeNumber={seasons[Number(seasonIndex) || 0].episodes[
-              Number(episodeIndex) || 0
-            ].episode_number.toString()}
-            showModal={showModal}
-            seasonIndex={seasonIndex}
-            episodeIndex={episodeIndex}
-          />
-        </Suspense>
+        <SelectSection
+          userId={userId}
+          mediaId={media.id}
+          mediaType={type}
+          originalName={originalName}
+          seasonNumber={seasons[
+            Number(seasonIndex) || 0
+          ].season_number.toString()}
+          episodeNumber={seasons[Number(seasonIndex) || 0].episodes[
+            Number(episodeIndex) || 0
+          ].episode_number.toString()}
+          showModal={showModal}
+          seasonIndex={seasonIndex}
+          episodeIndex={episodeIndex}
+        />
       </EpisodeSelector>
     ) : (
       //TODO
@@ -58,15 +53,13 @@ const SubtitlesSection = async function ({
     );
   } else {
     subtitles = (
-      <Suspense key={"Selection" + media.id} fallback={<SelectSectionLoader />}>
-        <SelectSection
-          userId={userId}
-          mediaId={media.id}
-          originalName={originalName}
-          mediaType={type}
-          showModal={showModal}
-        />
-      </Suspense>
+      <SelectSection
+        userId={userId}
+        mediaId={media.id}
+        originalName={originalName}
+        mediaType={type}
+        showModal={showModal}
+      />
     );
   }
   return <section>{subtitles}</section>;

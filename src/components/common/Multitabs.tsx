@@ -13,7 +13,7 @@ const Multitabs = ({
   tabs: TabOptions[];
   paramName: string;
 }) => {
-  const {t} = useTranslation("home")
+  const { t } = useTranslation("home");
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
@@ -40,8 +40,9 @@ const Multitabs = ({
   return (
     <div className={styles.multitabs}>
       {tabs.map((el, i) => (
-        <div
+        <button
           key={el.value}
+          // tabIndex={0} 
           className={getClassName(el.value, i)}
           onClick={(e) => {
             const value = el.value;
@@ -52,7 +53,7 @@ const Multitabs = ({
           }}
         >
           {t(el.label)}
-        </div>
+        </button>
       ))}
     </div>
   );

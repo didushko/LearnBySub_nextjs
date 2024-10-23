@@ -1,5 +1,5 @@
 import styles from "./SearchResultLoader.module.css";
-import originalStyles from "../search/SearchResult.module.css";
+import originalStyles from "@/components/search/SearchResult.module.css";
 
 export default function SearchResultLoader() {
   let data = [];

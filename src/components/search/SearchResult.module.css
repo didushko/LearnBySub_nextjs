@@ -18,7 +18,7 @@
   overflow: scroll;
   background-image: url("/background_icons.svg");
   background-repeat: repeat;
-  background-size: 200px 200;
+  background-size: 200px 200px;
 
   backdrop-filter: blur(50px);
   animation: snakeAnimation 10s linear infinite;

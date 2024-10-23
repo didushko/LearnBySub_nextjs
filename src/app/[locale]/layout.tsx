@@ -5,6 +5,9 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 import i18nConfig from "../../../i18nConfig";
 import { dir } from "i18next";
+import Header from "@/components/header/Header";
+import HideOnAuthPagesWrapper from "@/components/common/hide-on-auth-pages-wrapper";
+import Footer from "@/components/footer/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,23 +22,27 @@ export function generateStaticParams() {
 
 export default function RootLayout({
   children,
-  footer,
-  header,
+  modal,
   params: { locale },
 }: Readonly<{
   children: React.ReactNode;
   footer: React.ReactNode;
   header: React.ReactNode;
+  modal: React.ReactNode;
   params: { locale: string };
 }>) {
   return (
     <html lang={locale} dir={dir(locale)}>
       <body className={inter.className}>
+        
         <Toaster toastOptions={{ duration: 3000, position: "bottom-right" }} />
         <main>
-          {header}
+          <Header locale={locale} />
+          {modal}
           {children}
-          {footer}
+          <HideOnAuthPagesWrapper>
+            <Footer locale={locale} />
+          </HideOnAuthPagesWrapper>
         </main>
       </body>
     </html>

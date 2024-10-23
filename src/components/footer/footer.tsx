@@ -1,6 +1,6 @@
 import style from "./footer.module.css";
 
-export default function Footer() {
+export default function Footer({ locale }: { locale: string }) {
   return (
     <div className={style.footer_container}>
       <div className={style.footer_section}>

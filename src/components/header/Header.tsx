@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import styles from "./Header.module.css";
-import SearchBar from "./search/SearchBar";
-import SearchResult from "./search/SearchResult";
+import SearchBar from "../search/SearchBar";
 import ProfileButton from "./ProfileButton";
 import LibraryButton from "../library/buttons/LibraryButton";
-import SearchResultLoader from "./loaders/SearchResultLoader";
 import initTranslations from "@/commons/i18n";
 import TranslationsProvider from "../providers/TranslationsProvider";
+import HideOnAuthPagesWrapper from "../common/hide-on-auth-pages-wrapper";
+import LanguageChanger from "../common/changer";
 
 const i18nNamespaces = ["header"];
+interface IHeaderProps {
+  locale: string;
+}
 
-const Header = async ({ locale, query }: { locale: string; query: string }) => {
+const Header = async ({ locale }: IHeaderProps) => {
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <TranslationsProvider
@@ -19,23 +21,20 @@ const Header = async ({ locale, query }: { locale: string; query: string }) => {
       locale={locale}
       resources={resources}
     >
-      <div className={styles.header}>
+      <div className={styles.header} id={"header"}>
         <Link href="/">
           <div className={styles.headerLogo}>
             <span>LearnBySub</span>
           </div>
         </Link>
         <div className={styles.headerElements}>
-          <SearchBar>
-            <Suspense key={"search" + query} fallback={<SearchResultLoader />}>
-              <SearchResult query={query} locale={locale} />
-            </Suspense>
-          </SearchBar>
+          <SearchBar />
           {/* <TestCounter /> */}
           <div>
             <LibraryButton size={30} />
           </div>
           <ProfileButton />
+          <LanguageChanger />
           {/* <UILangMenu />
         {<NavigateElement to="/profile">Profile: {email}</NavigateElement> */}
         </div>
@@ -45,4 +44,10 @@ const Header = async ({ locale, query }: { locale: string; query: string }) => {
   );
 };
 
-export default Header;
+const HideOnAuthHeader = async (args: IHeaderProps) => (
+  <HideOnAuthPagesWrapper>
+    <Header {...args} />
+  </HideOnAuthPagesWrapper>
+);
+
+export default HideOnAuthHeader;

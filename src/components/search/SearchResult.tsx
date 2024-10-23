@@ -5,21 +5,26 @@ import styles from "./SearchResult.module.css";
 import PosterImg from "@/components/media/PosterImg";
 import TruncatedText from "@/components/common/TruncatedText";
 import initTranslations from "@/commons/i18n";
+import SearchResultLoader from "./loaders/SearchResultLoader";
 
-export default async function SearchResult({
+interface ISearchResultProps {
+  query: string;
+  searchParams?: { [key: string]: string | undefined };
+  locale: string;
+}
+
+async function SearchResult({
   query,
   locale,
-}: {
-  query: string;
-  locale: string;
-  callback?: Function;
-}) {
+  searchParams,
+}: ISearchResultProps) {
   const { t } = await initTranslations(locale, ["media"]);
   if (!query) {
-    return null;
-    <div className={styles.result}>
-      <span>Last searches:</span>
-    </div>
+    return (
+      <div className={styles.result}>
+        <span>Last searches:</span>
+      </div>
+    );
   }
 
   if (query.length < 2) {
@@ -33,6 +38,7 @@ export default async function SearchResult({
     const data = (
       await tmdbService.search({
         query,
+        searchParams,
         adult: false,
         language: locale,
         page: 1,
@@ -56,6 +62,7 @@ export default async function SearchResult({
               href={{
                 pathname: `/media/${media.media_type}/${media.id}`,
               }}
+              style={{ width: "10px" }}
             >
               <div className={styles.resultContainer}>
                 <div className={styles.imageContainer}>
@@ -70,7 +77,7 @@ export default async function SearchResult({
                   <div className={styles.text}>
                     <TruncatedText position="bottom">{title}</TruncatedText>
                   </div>
-                  <div className={styles.text}>{year.toString()}</div>
+                  <div className={styles.text}>{year || ""}</div>
                   <div className={styles.text}>{t(media.media_type)}</div>
                 </div>
               </div>
@@ -87,3 +94,17 @@ export default async function SearchResult({
     );
   }
 }
+
+const SearchResultWithSuspense = async (args: ISearchResultProps) => (
+  <Suspense
+    key={
+      "searchResult" + args.query + args.locale + args.searchParams?.toString()
+    }
+    fallback={<SearchResultLoader />}
+  >
+    <SearchResult {...args} />
+  </Suspense>
+);
+
+export default SearchResultWithSuspense;
+

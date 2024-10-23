@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Card from "./Card";
 import styled from "./Card.module.css";
 import tmdbService from "@/services/tmdb-service";
+import GridCardLoader from "./Loaders/GridCardLodader";
 
 interface ICardGrid {
   type: "movie" | "tv";
@@ -29,4 +31,12 @@ const CardsGrid = async ({ type, discover, locale }: ICardGrid) => {
   }
 };
 
-export default CardsGrid;
+const CardGridWithSuspense = async (args: ICardGrid) =>
+  <Suspense
+    key={args.type + args.discover + args.locale}
+    fallback={<GridCardLoader />}
+  >
+    <CardsGrid {...args} />
+  </Suspense>
+
+export default CardGridWithSuspense
