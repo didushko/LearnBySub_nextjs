@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { profileStructure } from "../profilePages";
+import { profileStructure } from "../profilePagesList";
 import { notFound } from "next/navigation";
 
 export default function profile({ params }: { params: { active: string } }) {

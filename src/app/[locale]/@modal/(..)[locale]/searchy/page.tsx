@@ -1,5 +1,5 @@
 import SearchResult from "@/components/search/SearchResult";
-import SearchModal from "./searchModal";
+import SearchModal from "./SearchModal";
 
 export default function Search({
   searchParams,

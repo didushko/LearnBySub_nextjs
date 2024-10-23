@@ -2,7 +2,7 @@ import tmdbService from "@/services/tmdb-service";
 import Link from "next/link";
 import styles from "./LibraryElement.module.css";
 import PosterImg from "../media/PosterImg";
-import FavoriteButton from "./buttons/FavoriteActionsButtons";
+import FavoriteButton from "../common/buttons/FavoriteActionsButtons";
 
 export default async function LibraryElement({
   userId,

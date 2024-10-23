@@ -6,7 +6,7 @@ import StarRating from "./StarRating";
 import { auth } from "@/services/auth-service";
 import SubtitlesSection from "./SubtitlesSection";
 import React from "react";
-import { ButtonSection } from "../library/buttons/ButtonSection";
+import { ButtonSection } from "../common/buttons/ButtonSection";
 import initTranslations from "@/commons/i18n";
 
 const MediaComponent: React.FC<{

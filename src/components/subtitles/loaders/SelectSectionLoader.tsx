@@ -1,4 +1,4 @@
-import { DownloadCashButtonDisabled } from "@/components/library/buttons/DownloadCashButtonDisabled";
+import { DownloadCashButtonDisabled } from "@/components/common/buttons/DownloadCashButtonDisabled";
 import style from "../SelectSection.module.css";
 export default function SelectSectionLoader() {
   return (

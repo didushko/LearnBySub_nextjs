@@ -1,9 +1,9 @@
 import { auth } from "@/services/auth-service";
-import styles from "./userInfo.module.css";
+import styles from "./UserInfo.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { SignOutButton } from "../auth/AuthButtons";
-import { profileTabs } from "@/app/[locale]/profile/profilePages";
+import { profileTabs } from "@/app/[locale]/profile/profilePagesList";
 
 export default async function UserInfo({ page }: { page?: string }) {
   const session = await auth();

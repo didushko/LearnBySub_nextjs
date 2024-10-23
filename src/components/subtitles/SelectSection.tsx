@@ -4,7 +4,7 @@ import subCashService from "@/services/subCash-service";
 import style from "./SelectSection.module.css";
 import Link from "next/link";
 import Play from "./play/Play";
-import { DownloadCashButton } from "../library/buttons/DownloadCashButton";
+import { DownloadCashButton } from "../common/buttons/DownloadCashButton";
 import { Suspense } from "react";
 import SelectSectionLoader from "./loaders/SelectSectionLoader";
 

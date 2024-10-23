@@ -1,5 +1,4 @@
-import UserInfo from "@/components/profile/userInfo";
-
+import UserInfo from "@/components/profile/UserInfo";
 
 export default function TestSettingsSlot({
   params,

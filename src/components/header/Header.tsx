@@ -2,11 +2,11 @@ import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchBar from "../search/SearchBar";
 import ProfileButton from "./ProfileButton";
-import LibraryButton from "../library/buttons/LibraryButton";
+import LibraryButton from "../common/buttons/LibraryButton";
 import initTranslations from "@/commons/i18n";
 import TranslationsProvider from "../providers/TranslationsProvider";
-import HideOnAuthPagesWrapper from "../common/hide-on-auth-pages-wrapper";
-import LanguageChanger from "../common/changer";
+import HideOnAuthPagesWrapper from "../common/HideOnAuthPagesWrapper";
+import LanguageChanger from "../common/Сhanger";
 
 const i18nNamespaces = ["header"];
 interface IHeaderProps {

@@ -6,11 +6,6 @@
   z-index: 3;
 }
 
-.modalBackdrop {
-  background-color: rgb(4, 4, 4, 0.8);
-  overflow: auto;
-}
-
 .modalContent {
   display: contents;
 }
