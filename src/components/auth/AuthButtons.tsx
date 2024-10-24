@@ -4,6 +4,7 @@ import styles from "./AuthButtons.module.css";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import LinkWithLoading from "../common/LinkWithLoading";
 
 declare global {
   interface Window {
@@ -25,9 +26,13 @@ declare global {
 
 export function SignOutButton() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = searchParams.toString() ? `?${searchParams.toString()}` : "";
   return (
     <button
-      onClick={() => signOut({ callbackUrl: "/signin?callback=" + pathname })}
+      onClick={() =>
+        signOut({ callbackUrl: "/signin?callback=" + pathname + params })
+      }
     >
       Signin out
     </button>
@@ -36,15 +41,17 @@ export function SignOutButton() {
 
 export function SignInButton() {
   const pathname = usePathname();
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = searchParams.toString() ? `?${searchParams.toString()}` : "";
   const { t } = useTranslation();
   return (
-    <button
+    <LinkWithLoading
       className={styles.login}
-      onClick={() => router.push("/signin?callback=" + pathname)}
+      // onClick={() => router.push("/signin?callback=" + pathname)}
+      href={`/signin?callback=${pathname}${params}`}
     >
       {t("sign_in")}
-    </button>
+    </LinkWithLoading>
   );
 }
 
@@ -76,7 +83,10 @@ export function AuthProviders({
 function GoogleSignIn({ callbackPath }: { callbackPath: string }) {
   return (
     <div
-      onClick={() => signIn("google", { callbackUrl: callbackPath || "/" })}
+      onClick={async (e) => {
+        e.currentTarget.classList.add(styles.loading);
+        await signIn("google", { callbackUrl: callbackPath || "/" });
+      }}
       className={styles.button}
     >
       <div className={styles.googleIcon}></div>
@@ -92,7 +102,6 @@ function TelegramSignIn({
   bot_id?: string;
   callback: string;
 }) {
-  const pathname = usePathname();
   if (!bot_id) {
     return null;
   }
@@ -102,19 +111,25 @@ function TelegramSignIn({
       <script src="https://telegram.org/js/telegram-widget.js?22" async />
       <div
         className={styles.button}
-        onClick={() =>
+        onClick={async (e) => {
+          e.currentTarget.classList.add(styles.loading);
           window.Telegram.Login.auth(
             {
-              bot_id,
-              origin: globalThis.location.origin,
+              bot_id: bot_id + "sd",
+              origin: globalThis.location.origin + "asd",
               embed: 1,
               request_access: "write",
             },
             (data: any) => {
-              signIn("telegram", { ...data, callbackUrl: callback });
+              try {
+                signIn("telegram", { ...data, callbackUrl: callback });
+              } catch (e) {
+                console.log(e);
+              }
             }
-          )
-        }
+          );
+          window.Telegram;
+        }}
       >
         <div className={styles.telegramIcon}></div>
       </div>

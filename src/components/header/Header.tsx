@@ -30,9 +30,7 @@ const Header = async ({ locale }: IHeaderProps) => {
         <div className={styles.headerElements}>
           <SearchBar />
           {/* <TestCounter /> */}
-          <div>
-            <LibraryButton size={30} />
-          </div>
+          <LibraryButton size={30} />
           <ProfileButton />
           <LanguageChanger />
           {/* <UILangMenu />

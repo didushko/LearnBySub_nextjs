@@ -14,22 +14,16 @@ export default function SearchModal({ children }: { children: ReactElement }) {
   if (getCleanPathname(pathName) !== "/searchy") {
     return null;
   }
-
-  const closeHandler = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete("query");
-    replace(`${pathName}?${params.toString()}`);
-    back();
-  };
+  
   return (
     <Modal
       visible={true}
       backdropeStyleClass={styles.BackDropWraper}
       addIdToFocus={["header"]}
-      dropCallback={closeHandler}
+      dropCallback={back}
       onKeyUp={(e) => {
         if (e.key == "Escape") {
-          closeHandler();
+          back();
         }
       }}
     >

@@ -54,15 +54,12 @@ const Modal = ({
   if (mounted && visible) {
     return createPortal(
       <div {...rest}>
-        <div className={backdropeStyleClass} onClick={backDropHandle}>
+        <div
+          className={backdropeStyleClass}
+          onClick={backDropHandle}
+        >
           <div
             id="modalContent"
-            onKeyUp={(e) => {
-              console.log("ads");
-              if (e.key == "Escape") {
-                backDropHandle();
-              }
-            }}
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
           >

@@ -30,7 +30,7 @@ export default function SignIn() {
             <div id="password-error" className={styles.errorMessage}></div>
           </div>
           <div className={styles.buttonBlock}>
-            <button>Sign In</button>
+            <button id={"sendButton"}>Sign In</button>
           </div>
         </Form>
         <AuthProviders providers={authProviders} />

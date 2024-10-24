@@ -20,51 +20,70 @@ export default function SearchBarIntercept() {
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const { replace, push, back } = useRouter();
   const cleanPath = getCleanPathname(pathName);
+  const isModal = cleanPath === "/searchy";
+  const isSearchPage = cleanPath === "/search";
 
   const closeHandler = () => {
-    console.log("click");
-    setSearchQuery(cleanPath === "/search" ? null : null);
-    cleanPath === "/searchy" && back();
+    isModal && back();
+    setSearchQuery("");
   };
 
   useEffect(() => {
     setSearchQuery(searchParams.get("query"));
   }, [searchParams]);
 
-  const eraceIcon =
-    cleanPath === "/search" ? (
-      <Image
-        className={`${styles.opacityOnHover} ${
-          debouncedSearchQuery ? " " : styles.hiddenIcon
-        }`}
-        width={30}
-        height={30}
-        src={EraceIcon}
-        onClick={closeHandler}
-        alt={"Erace search input"}
-        priority
-      />
-    ) : null;
+  useEffect(() => {
+    if (
+      typeof searchQuery === "string" &&
+      debouncedSearchQuery !== searchParams.get("query")
+    ) {
+      const params = new URLSearchParams(searchParams);
+      debouncedSearchQuery
+        ? params.set("query", debouncedSearchQuery)
+        : params.delete("query");
+      if (isSearchPage) {
+        replace(`/search/?${params.toString()}`, { scroll: false });
+      } else if (isModal) {
+        !debouncedSearchQuery && back();
+        replace(`/searchy/?${params.toString()}`, { scroll: false });
+      } else {
+        push(`/searchy/?${params.toString()}`, { scroll: false });
+      }
+    }
+  }, [debouncedSearchQuery]);
 
-  const filterIcon =
-    cleanPath !== "/search" ? (
-      <Image
-        className={styles.opacityOnHover}
-        width={20}
-        height={20}
-        src={FiltersIcon}
-        onClick={() => {
-          setSearchQuery(false);
-          push(`/search/?filters&${searchParams.toString()}`);
-        }}
-        alt={"Filter search input"}
-      />
-    ) : null;
+  const eraceIcon = isSearchPage ? (
+    <Image
+      className={`${styles.opacityOnHover} ${
+        debouncedSearchQuery ? "" : styles.hiddenIcon
+      }`}
+      width={30}
+      height={30}
+      src={EraceIcon}
+      onClick={closeHandler}
+      alt={"Erace search input"}
+      priority
+    />
+  ) : null;
+
+  const filterIcon = !isSearchPage ? (
+    <Image
+      className={styles.opacityOnHover}
+      width={20}
+      height={20}
+      src={FiltersIcon}
+      onClick={() => {
+        setSearchQuery(false);
+        push(`/search/?filters&${searchParams.toString()}`);
+      }}
+      alt={"Filter search input"}
+    />
+  ) : null;
 
   const closeIcon = (
     <Image
       className={`${styles.opacityOnHover} ${
-        debouncedSearchQuery ? " " : styles.hiddenIcon
+        debouncedSearchQuery ? "" : styles.hiddenIcon
       }`}
       width={25}
       height={25}
@@ -74,25 +93,6 @@ export default function SearchBarIntercept() {
       priority
     />
   );
-
-  useEffect(() => {
-    if (
-      debouncedSearchQuery !== false &&
-      debouncedSearchQuery !== searchParams.get("query")
-    ) {
-      const params = new URLSearchParams(searchParams);
-      debouncedSearchQuery
-        ? params.set("query", debouncedSearchQuery)
-        : params.delete("query");
-      if (cleanPath === "/search") {
-        replace(`/search/?${params.toString()}`, { scroll: false });
-      } else if (cleanPath === "/searchy") {
-        replace(`/searchy/?${params.toString()}`, { scroll: false });
-      } else {
-        push(`/searchy/?${params.toString()}`, { scroll: false });
-      }
-    }
-  }, [cleanPath, debouncedSearchQuery, push, replace, searchParams]);
 
   return (
     <>
@@ -106,8 +106,7 @@ export default function SearchBarIntercept() {
           if (e.key == "Escape") {
             closeHandler();
           }
-          if (e.key === "Enter" && cleanPath !== "/search") {
-            setSearchQuery(false);
+          if (e.key === "Enter" && !isSearchPage) {
             push(
               `/search/?${searchQuery ? "query=" + searchQuery + " " : ""}`,
               { scroll: false }
@@ -117,12 +116,13 @@ export default function SearchBarIntercept() {
       >
         <div
           className={
-            searchParams.get("query") !== debouncedSearchQuery
+            typeof searchQuery === "string" &&
+            searchParams.get("query") !== (debouncedSearchQuery || null)
               ? styles.loader
               : styles.searchIcon
           }
           onClick={() =>
-            cleanPath !== "/search" &&
+            !isSearchPage &&
             push(`/search/?query=${debouncedSearchQuery || ""}`)
           }
         />
@@ -136,7 +136,7 @@ export default function SearchBarIntercept() {
           value={searchQuery || ""}
         />
         {filterIcon}
-        {cleanPath === "/search" ? eraceIcon : closeIcon}
+        {isSearchPage ? eraceIcon : closeIcon}
       </div>
     </>
   );

@@ -45,14 +45,17 @@ export default function Form({
       className={styles.signForm}
       action={async (formData) => {
         document.getElementById("formContainer")?.classList.add(styles.loading);
+        document.getElementById("sendButton")?.classList.add(styles.loading);
         setErrors([]);
         const errors = await signInAction(formData);
-        document
-          .getElementById("formContainer")
-          ?.classList.remove(styles.loading);
-        setErrors(errors || []);
-        if (!errors) {
-          router.push(searchParams.get("callback") || "/");
+        if (errors) {
+          document
+            .getElementById("formContainer")
+            ?.classList.remove(styles.loading);
+          document
+            .getElementById("sendButton")
+            ?.classList.remove(styles.loading);
+          setErrors(errors || []);
         }
       }}
     >

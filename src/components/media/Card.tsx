@@ -8,6 +8,7 @@ import TruncatedText from "../common/TruncatedText";
 import StarRating from "./StarRating";
 import FlagImg from "../common/FlagImg";
 import { getCountryCode } from "@/languages/subLanguages";
+import LinkWithLoading from "../common/LinkWithLoading";
 
 const Card = function ({
   media,
@@ -20,7 +21,7 @@ const Card = function ({
 }) {
   let { title, year } = tmdbService.getUnitMediaFields(media);
   return (
-    <Link href={`media/${type}/${media.id}`}>
+    <LinkWithLoading href={`media/${type}/${media.id}`} mode="hover-width">
       <div className={styles.card}>
         <div className={styles.raite}>
           <StarRating rate={media.vote_average} />
@@ -39,7 +40,7 @@ const Card = function ({
           <div>{year || null}</div>
         </div>
       </div>
-    </Link>
+    </LinkWithLoading>
   );
 };
 export default Card;

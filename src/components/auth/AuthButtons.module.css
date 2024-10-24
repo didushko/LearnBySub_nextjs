@@ -12,6 +12,21 @@
   }
 }
 
+.loading {
+  animation: pulse 1s linear infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .googleIcon {
   background: url("https://authjs.dev/img/providers/google.svg");
   display: inline-block;

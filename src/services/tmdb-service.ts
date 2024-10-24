@@ -121,7 +121,6 @@ class TMDBService {
   }): Promise<IApiResponse<SearchResultsType>> {
     const res = await this._search(params);
     while (res.results.length < 20 && res.page <= res.total_pages) {
-      console.log("research");
       const res2 = await this._search({ ...params, ...{ page: ++res.page } });
       res.results.push(...res2.results);
     }

@@ -83,10 +83,9 @@
 
 .errorMessage {
   position: absolute;
-  color: red;
+  color: rgba(255, 54, 54, 0.691);
   padding: 2px 20px;
 }
-
 
 @media (max-aspect-ratio: 1/1) or (((max-width: 1000px) and (min-aspect-ratio: 1/1)) or (max-height: 550px)) {
   .container {
