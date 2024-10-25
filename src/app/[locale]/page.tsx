@@ -37,11 +37,7 @@ export default async function Home({
     i18nNamespaces
   );
   return (
-    <TranslationsProvider
-      namespaces={i18nNamespaces}
-      locale={params.locale}
-      resources={resources}
-    >
+    <>
       <div className={styles.discoverTabs}>
         <Multitabs
           tabs={typesList.map((item) => ({
@@ -63,6 +59,6 @@ export default async function Home({
         type={searchParams?.type || typesList[0]}
         discover={searchParams?.discover || discoverList[0]}
       />
-    </TranslationsProvider>
+    </>
   );
 }

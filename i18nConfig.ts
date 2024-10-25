@@ -6,14 +6,11 @@ const i18nConfig: Config = {
   prefixDefault: true,
 };
 
-export function getCleanPathname(pathname: string) {
-  const segments = pathname.split("/");
-  const locale = i18nConfig.locales.includes(segments[1])
-    ? segments[1]
-    : i18nConfig.defaultLocale;
-  return pathname.startsWith(`/${locale}`)
-    ? pathname.replace(`/${locale}`, "")
-    : pathname;
+export function getCleanPathname(pathname: string): string {
+  const segments = pathname.replace(/^\/+|\/+$/g, "").split("/");
+  const locale = i18nConfig.locales.includes(segments[0]) ? segments[0] : "";
+  const cleanPath = locale ? segments.slice(1).join("/") : segments.join("/");
+  return cleanPath ? `/${cleanPath}` : "/";
 }
 
 export default i18nConfig;

@@ -1,10 +1,10 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import styles from "./AuthButtons.module.css";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LinkWithLoading from "../common/LinkWithLoading";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 declare global {
   interface Window {
@@ -45,13 +45,13 @@ export function SignInButton() {
   const params = searchParams.toString() ? `?${searchParams.toString()}` : "";
   const { t } = useTranslation();
   return (
-    <LinkWithLoading
+    <ResponsiveNavigation
       className={styles.login}
-      // onClick={() => router.push("/signin?callback=" + pathname)}
-      href={`/signin?callback=${pathname}${params}`}
+      path={`/signin?callback=${pathname}${params}`}
+      mode="border"
     >
       {t("sign_in")}
-    </LinkWithLoading>
+    </ResponsiveNavigation>
   );
 }
 
@@ -90,7 +90,6 @@ function GoogleSignIn({ callbackPath }: { callbackPath: string }) {
       className={styles.button}
     >
       <div className={styles.googleIcon}></div>
-      {/* <div className={styles.googleTitle}>SignIn with Google</div> */}
     </div>
   );
 }

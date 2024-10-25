@@ -24,6 +24,10 @@ const LibraryActionsButtons = ({
 }) => {
   const [isLoading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setLoading(false);
+  }, [inLibrary]);
+
   const handleAddToLibrary = async function (e: any) {
     e.stopPropagation();
     e.preventDefault();
@@ -31,8 +35,8 @@ const LibraryActionsButtons = ({
     const added = await addToLibrary(userId, itemId, type, path);
     if (!added) {
       toast.error("Error when adding to library");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleDeleteFromLibrary = async function (e: any) {
@@ -42,8 +46,8 @@ const LibraryActionsButtons = ({
     const deleted = await deleteFromLibrary(userId, itemId, type, path);
     if (!deleted) {
       toast.error("Error when deleting to library");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

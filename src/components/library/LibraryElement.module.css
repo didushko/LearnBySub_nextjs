@@ -1,6 +1,6 @@
 .element {
   position: relative;
-  width: 65%;
+  width: 100%;
   display: inline-flex;
   gap: 10%;
   height: 100px;
@@ -24,7 +24,8 @@
 }
 
 .linkContainer {
-  display: contents;
+  width: 80%;
+  margin: auto;
 }
 .mediaInfo {
   display: inline-flex;

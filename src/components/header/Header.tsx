@@ -7,6 +7,7 @@ import initTranslations from "@/commons/i18n";
 import TranslationsProvider from "../providers/TranslationsProvider";
 import HideOnAuthPagesWrapper from "../common/HideOnAuthPagesWrapper";
 import LanguageChanger from "../common/Сhanger";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 const i18nNamespaces = ["header"];
 interface IHeaderProps {
@@ -22,11 +23,12 @@ const Header = async ({ locale }: IHeaderProps) => {
       resources={resources}
     >
       <div className={styles.header} id={"header"}>
-        <Link href="/">
-          <div className={styles.headerLogo}>
+        <div className={styles.headerLogo}>
+          <ResponsiveNavigation path="/" mode="hoverHeight" around={false}>
+            {/* <div className={styles.headerLogo}> */}
             <span>LearnBySub</span>
-          </div>
-        </Link>
+          </ResponsiveNavigation>
+        </div>
         <div className={styles.headerElements}>
           <SearchBar />
           {/* <TestCounter /> */}

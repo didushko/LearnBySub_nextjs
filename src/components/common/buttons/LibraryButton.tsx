@@ -1,17 +1,16 @@
-import Link from "next/link";
 import Image from "next/image";
 import libraryIcon from "../../../../public/library.svg";
-import LinkWithLoading from "../LinkWithLoading";
+import ResponsiveNavigation from "../ResponsiveNavigation";
 
 const LibraryButton = ({ size = 50 }: { size?: number }) => (
-  <LinkWithLoading href={"/library"} mode="hover-height">
+  <ResponsiveNavigation path={"/library"} mode="hoverHeight" around>
     <Image
       width={size}
       height={size}
       src={libraryIcon}
       alt={"Go to library icon"}
     />
-  </LinkWithLoading>
+  </ResponsiveNavigation>
 );
 
 export default LibraryButton;

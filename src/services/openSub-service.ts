@@ -69,7 +69,7 @@ class OpenSubService {
         await this.subAxios.get("/subtitles", {
           params: {
             [type === "Movie" ? "feature_id" : "parent_feature_id"]:
-              findedFeature.attributes.feature_id,
+              findedFeature.attributes?.feature_id,
             type,
             ai_translated: "exclude",
             languages: "en",
@@ -101,10 +101,12 @@ class OpenSubService {
     if (result && result.length > 0) {
       let finded = result.find(
         (el) =>
-          el.attributes.original_title.toLowerCase() ===
+          el.attributes.original_name?.toLowerCase() ===
           originalName.toLowerCase()
       );
-      return finded;
+      if (finded) {
+        return finded;
+      }
     }
   }
 
@@ -114,10 +116,10 @@ class OpenSubService {
   ): Promise<Season[] | undefined> {
     const finded = await this.getFeatureByTmdbId(tmdb_id, originalName);
     if (finded) {
-      const filtered = finded.attributes.seasons.filter(
+      const filtered = finded.attributes.seasons?.filter(
         (s) => s.episodes.length > 0
       );
-      if (filtered.length > 0) return filtered;
+      if (filtered?.length > 0) return filtered;
     }
     return undefined;
   }
@@ -205,7 +207,7 @@ class OpenSubService {
       season,
       episode
     );
-    if (!sub || sub.attributes.files.length < 1) {
+    if (!sub || sub.attributes.files?.length < 1) {
       throw OpensubError.NoSubsFined();
     }
     const fileId = sub.attributes.files[0].file_id;

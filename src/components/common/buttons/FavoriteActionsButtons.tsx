@@ -24,6 +24,10 @@ const FavoriteButton = ({
 }) => {
   const [isLoading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setLoading(false);
+  }, [inFavorite]);
+
   const handleAddToFavorite = async function (e: any) {
     e.preventDefault();
     e.stopPropagation();
@@ -31,8 +35,8 @@ const FavoriteButton = ({
     const added = await addToFavorite(userId, itemId, type, path);
     if (!added) {
       toast.error("Error when adding to favorite");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleDeleteFromFavorite = async function (e: any) {
@@ -42,8 +46,8 @@ const FavoriteButton = ({
     const deleted = await deleteFromFavorite(userId, itemId, type, path);
     if (!deleted) {
       toast.error("Error when deleting to favorite");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SignOutButton } from "../auth/AuthButtons";
 import { profileTabs } from "@/app/[locale]/profile/profilePagesList";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 export default async function UserInfo({ page }: { page?: string }) {
   const session = await auth();
@@ -39,13 +40,18 @@ export default async function UserInfo({ page }: { page?: string }) {
           </svg>
         )}
       </div>
-      <div>
+      <div className={styles.userMenu}>
         {tabs.map((tab) => (
-          <Link href={tab.key} key={tab.key}>
-            <div className={page === tab.key ? styles.selected : ""}>
-              {tab.name}
-            </div>
-          </Link>
+          <ResponsiveNavigation
+            path={tab.key}
+            key={tab.key}
+            mode="hoverHeight"
+            around={false}
+            className={page === tab.key ? styles.selected : styles.userMenuItem}
+            blure={true}
+          >
+            {tab.name}
+          </ResponsiveNavigation>
         ))}
         <SignOutButton />
       </div>

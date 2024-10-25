@@ -43,30 +43,3 @@
   padding: 10px 4px 10px 4px;
   color: white;
 }
-
-.loading {
-  animation: snakeAnimation 1s linear infinite;
-}
-
-@keyframes snakeAnimation {
-  0% {
-    box-shadow: 3px 3px 10px rgba(var(--yellowUk), 0.3),
-      -3px -3px 10px rgba(var(--blueUk), 0.5);
-  }
-  25% {
-    box-shadow: 3px -3px 10px rgba(var(--yellowUk), 0.3),
-      -3px 3px 10px rgba(var(--blueUk), 0.5);
-  }
-  50% {
-    box-shadow: -3px -3px 10px rgba(var(--yellowUk), 0.3),
-      3px 3px 10px rgba(var(--blueUk), 0.5);
-  }
-  75% {
-    box-shadow: -3px 3px 10px rgba(var(--yellowUk), 0.3),
-      -3px -3px 10px rgba(var(--blueUk), 0.5);
-  }
-  100% {
-    box-shadow: 3px 3px 10px rgba(var(--yellowUk), 0.3),
-      -3px -3px 10px rgba(var(--blueUk), 0.5);
-  }
-}

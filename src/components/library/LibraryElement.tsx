@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./LibraryElement.module.css";
 import PosterImg from "../media/PosterImg";
 import FavoriteButton from "../common/buttons/FavoriteActionsButtons";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 export default async function LibraryElement({
   userId,
@@ -21,10 +22,12 @@ export default async function LibraryElement({
   const { title, year, originalTitle, runtime } =
     tmdbService.getUnitMediaFields(media);
   return (
-    <Link
+    <ResponsiveNavigation
       key={media.id}
-      href={`media/${type}/${media.id}`}
+      path={`media/${type}/${media.id}`}
       className={styles.linkContainer}
+      mode="border"
+      blure={true}
     >
       <div className={styles.element} tabIndex={0}>
         <div className={styles.mediaInfo}>
@@ -57,6 +60,6 @@ export default async function LibraryElement({
           backdropSize="w780"
         />
       </div>
-    </Link>
+    </ResponsiveNavigation>
   );
 }

@@ -22,6 +22,10 @@ export default function SearchBarIntercept() {
   const cleanPath = getCleanPathname(pathName);
   const isModal = cleanPath === "/searchy";
   const isSearchPage = cleanPath === "/search";
+  const needUpdate =
+    typeof searchQuery === "string" &&
+    searchParams.get("query") !== debouncedSearchQuery;
+  const isLoading = searchQuery === false || needUpdate;
 
   const closeHandler = () => {
     isModal && back();
@@ -33,10 +37,7 @@ export default function SearchBarIntercept() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (
-      typeof searchQuery === "string" &&
-      debouncedSearchQuery !== searchParams.get("query")
-    ) {
+    if (needUpdate) {
       const params = new URLSearchParams(searchParams);
       debouncedSearchQuery
         ? params.set("query", debouncedSearchQuery)
@@ -115,12 +116,7 @@ export default function SearchBarIntercept() {
         }}
       >
         <div
-          className={
-            typeof searchQuery === "string" &&
-            searchParams.get("query") !== (debouncedSearchQuery || null)
-              ? styles.loader
-              : styles.searchIcon
-          }
+          className={isLoading ? styles.loader : styles.searchIcon}
           onClick={() =>
             !isSearchPage &&
             push(`/search/?query=${debouncedSearchQuery || ""}`)

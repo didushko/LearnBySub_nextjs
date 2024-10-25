@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { IMovie, ITv } from "../../interfaces/media";
-import Link from "next/link";
 import styles from "./Card.module.css";
 import tmdbService from "@/services/tmdb-service";
 import PosterImage from "./PosterImg";
@@ -8,7 +7,7 @@ import TruncatedText from "../common/TruncatedText";
 import StarRating from "./StarRating";
 import FlagImg from "../common/FlagImg";
 import { getCountryCode } from "@/languages/subLanguages";
-import LinkWithLoading from "../common/LinkWithLoading";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 const Card = function ({
   media,
@@ -21,7 +20,12 @@ const Card = function ({
 }) {
   let { title, year } = tmdbService.getUnitMediaFields(media);
   return (
-    <LinkWithLoading href={`media/${type}/${media.id}`} mode="hover-width">
+    <ResponsiveNavigation
+      path={`media/${type}/${media.id}`}
+      mode="hoverWidth"
+      around={false}
+      blure={true}
+    >
       <div className={styles.card}>
         <div className={styles.raite}>
           <StarRating rate={media.vote_average} />
@@ -40,7 +44,7 @@ const Card = function ({
           <div>{year || null}</div>
         </div>
       </div>
-    </LinkWithLoading>
+    </ResponsiveNavigation>
   );
 };
 export default Card;

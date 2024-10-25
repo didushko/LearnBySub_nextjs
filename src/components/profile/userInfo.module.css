@@ -14,6 +14,15 @@
   justify-content: space-around;
 }
 
+.userMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.userMenuItem:hover {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
 .selected {
   color: red;
 }

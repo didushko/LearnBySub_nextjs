@@ -1,14 +1,19 @@
 import { auth } from "@/services/auth-service";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./Profile.Button.module.css";
 import { SignInButton } from "../auth/AuthButtons";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 const ProfileButton = async () => {
   const session = await auth(true);
   if (session) {
     return (
-      <Link href={"/profile"} className={styles.link}>
+      <ResponsiveNavigation
+        path={"/profile"}
+        className={styles.link}
+        mode="border"
+        blure={true}
+      >
         {session.user.image ? (
           <Image
             src={session.user.image}
@@ -38,7 +43,7 @@ const ProfileButton = async () => {
         <div className={styles.name}>
           {session.user.name || session.user.email}
         </div>
-      </Link>
+      </ResponsiveNavigation>
     );
   } else return <SignInButton />;
 };
