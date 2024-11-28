@@ -43,6 +43,9 @@ export async function SelectSection({
   if (subsData) {
     stats = await dictService.getStatisticsBySubData(userId, subsData);
   }
+  if (subsData) {
+    subsData.words = subsData?.words.sort((a, b) => a.freq - b.freq);
+  }
   return (
     <section about="StartLearningButtons" className={style.section}>
       <DownloadCashButton

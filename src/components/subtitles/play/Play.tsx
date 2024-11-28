@@ -6,8 +6,11 @@ import style from "./Play.module.css";
 import { IIdiom, IPhrase, IWord } from "@/database/models/subCash-model";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
-
-export default function Play({ data }: { data?: IWord[] | IIdiom[] | IPhrase[] }) {
+export default function Play({
+  data,
+}: {
+  data?: IWord[] | IIdiom[] | IPhrase[];
+}) {
   const pathName = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +32,15 @@ export default function Play({ data }: { data?: IWord[] | IIdiom[] | IPhrase[] }
       }}
       dropCallback={() => exit()}
     >
-      <div className={style.content}>{data?.length}</div>
+      <div className={style.content}>
+        {data?.map((el) => (
+          <div>
+            <div>{el.value}</div>
+            <div>{el.type !== "word" ? el.definitions : el.freq}</div>
+            <br></br>
+          </div>
+        ))}
+      </div>
     </Modal>
   );
 }

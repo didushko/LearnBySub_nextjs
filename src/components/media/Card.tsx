@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { IMovie, ITv } from "../../interfaces/media";
 import styles from "./Card.module.css";
 import tmdbService from "@/services/tmdb-service";
@@ -25,24 +25,23 @@ const Card = function ({
       mode="hoverWidth"
       around={false}
       blure={true}
+      className={styles.card}
     >
-      <div className={styles.card}>
-        <div className={styles.raite}>
-          <StarRating rate={media.vote_average} />
-        </div>
-        <div className={styles.lang}>
-          <FlagImg countryCode={getCountryCode(media.original_language)} />
-        </div>
-        <PosterImage
-          sizes={220}
-          posterPath={media.poster_path}
-          title={title}
-          priority={index < 0}
-        />
-        <div className={styles.title}>
-          <TruncatedText>{title}</TruncatedText>
-          <div>{year || null}</div>
-        </div>
+      <div className={styles.raite}>
+        <StarRating rate={media.vote_average} />
+      </div>
+      <div className={styles.lang}>
+        <FlagImg countryCode={getCountryCode(media.original_language)} />
+      </div>
+      <PosterImage
+        sizes={220}
+        posterPath={media.poster_path}
+        title={title}
+        priority={index < 0}
+      />
+      <div className={styles.title}>
+        <TruncatedText>{title}</TruncatedText>
+        <div>{year || null}</div>
       </div>
     </ResponsiveNavigation>
   );

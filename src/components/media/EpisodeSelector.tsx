@@ -27,19 +27,15 @@ const EpisodeSelector = function ({
     searchParams.get("season") !== selectedSeason.toString() ||
     searchParams.get("episode") !== selectedEpisode.toString();
 
-  const setParams = (season: number, episode: number) => {
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    if (season.toString() !== searchParams.get("season")) {
+    if (selectedSeason.toString() !== searchParams.get("season")) {
       setEpisode(0);
     }
-    params.set("season", season.toString());
-    params.set("episode", episode.toString());
+    params.set("season", selectedSeason.toString());
+    params.set("episode", selectedEpisode.toString());
     replace(`${pathName}?${params.toString()}`, { scroll: false });
-  };
-
-  useEffect(() => {
-    setParams(selectedSeason, selectedEpisode);
-  }, [selectedSeason, selectedEpisode]);
+  }, [selectedSeason, selectedEpisode, searchParams, replace, pathName]);
   return (
     <>
       <section className={styles.section}>

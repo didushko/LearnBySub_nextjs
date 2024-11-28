@@ -21,11 +21,13 @@
 
 .text {
   margin: 5px;
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
 }
 
 .linkContainer {
-  width: 80%;
-  margin: auto;
+  width: 350px;
 }
 .mediaInfo {
   display: inline-flex;

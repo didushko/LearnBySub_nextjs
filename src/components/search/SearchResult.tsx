@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
 import tmdbService from "@/services/tmdb-service";
-import Link from "next/link";
 import styles from "./SearchResult.module.css";
 import PosterImg from "@/components/media/PosterImg";
 import TruncatedText from "@/components/common/TruncatedText";
 import initTranslations from "@/commons/i18n";
 import SearchResultLoader from "./loaders/SearchResultLoader";
+import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 interface ISearchResultProps {
   query: string;
@@ -57,31 +57,30 @@ async function SearchResult({
         {data.map((media, i) => {
           let { title, year } = tmdbService.getUnitMediaFields(media);
           return (
-            <Link
+            <ResponsiveNavigation
               key={media.id}
-              href={{
-                pathname: `/media/${media.media_type}/${media.id}`,
-              }}
-              style={{ width: "10px" }}
+              mode="border"
+              path={`/media/${media.media_type}/${media.id}`}
+              className={styles.resultContainer}
             >
-              <div className={styles.resultContainer}>
-                <div className={styles.imageContainer}>
-                  <PosterImg
-                    sizes="70px"
-                    posterPath={media.poster_path}
-                    title={title}
-                    priority={i < 2}
-                  />
-                </div>
-                <div>
-                  <div className={styles.text}>
-                    <TruncatedText position="bottom">{title}</TruncatedText>
-                  </div>
-                  <div className={styles.text}>{year || ""}</div>
-                  <div className={styles.text}>{t(media.media_type)}</div>
-                </div>
+              {/* <div className={styles.resultContainer}> */}
+              <div className={styles.imageContainer}>
+                <PosterImg
+                  sizes="70px"
+                  posterPath={media.poster_path}
+                  title={title}
+                  priority={i < 2}
+                />
               </div>
-            </Link>
+              <div>
+                <div className={styles.text}>
+                  <TruncatedText position="bottom">{title}</TruncatedText>
+                </div>
+                <div className={styles.text}>{year || ""}</div>
+                <div className={styles.text}>{t(media.media_type)}</div>
+              </div>
+              {/* </div> */}
+            </ResponsiveNavigation>
           );
         })}
       </div>
@@ -107,4 +106,3 @@ const SearchResultWithSuspense = async (args: ISearchResultProps) => (
 );
 
 export default SearchResultWithSuspense;
-

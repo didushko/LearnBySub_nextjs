@@ -15,16 +15,17 @@ export default function SearchBarIntercept() {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const pathName = usePathname();
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const query = searchParams.get("query");
 
   const [searchQuery, setSearchQuery] = useState<string | null | false>(false);
-  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const { replace, push, back } = useRouter();
   const cleanPath = getCleanPathname(pathName);
   const isModal = cleanPath === "/searchy";
   const isSearchPage = cleanPath === "/search";
   const needUpdate =
-    typeof searchQuery === "string" &&
-    searchParams.get("query") !== debouncedSearchQuery;
+    typeof searchQuery === "string" && (query || "") != debouncedSearchQuery;
   const isLoading = searchQuery === false || needUpdate;
 
   const closeHandler = () => {
@@ -33,8 +34,8 @@ export default function SearchBarIntercept() {
   };
 
   useEffect(() => {
-    setSearchQuery(searchParams.get("query"));
-  }, [searchParams]);
+    if (searchQuery === false) setSearchQuery(query);
+  }, [query, searchQuery]);
 
   useEffect(() => {
     if (needUpdate) {
@@ -51,10 +52,20 @@ export default function SearchBarIntercept() {
         push(`/searchy/?${params.toString()}`, { scroll: false });
       }
     }
-  }, [debouncedSearchQuery]);
+  }, [
+    debouncedSearchQuery,
+    needUpdate,
+    isModal,
+    isSearchPage,
+    back,
+    push,
+    replace,
+    searchParams,
+  ]);
 
   const eraceIcon = isSearchPage ? (
     <Image
+      tabIndex={0}
       className={`${styles.opacityOnHover} ${
         debouncedSearchQuery ? "" : styles.hiddenIcon
       }`}
@@ -62,6 +73,12 @@ export default function SearchBarIntercept() {
       height={30}
       src={EraceIcon}
       onClick={closeHandler}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          closeHandler();
+          inputRef.current?.focus();
+        }
+      }}
       alt={"Erace search input"}
       priority
     />
@@ -69,6 +86,7 @@ export default function SearchBarIntercept() {
 
   const filterIcon = !isSearchPage ? (
     <Image
+      tabIndex={0}
       className={styles.opacityOnHover}
       width={20}
       height={20}
@@ -77,12 +95,19 @@ export default function SearchBarIntercept() {
         setSearchQuery(false);
         push(`/search/?filters&${searchParams.toString()}`);
       }}
-      alt={"Filter search input"}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          setSearchQuery(false);
+          push(`/search/?filters&${searchParams.toString()}`);
+        }
+      }}
+      alt={"Go to filters"}
     />
   ) : null;
 
   const closeIcon = (
     <Image
+      tabIndex={0}
       className={`${styles.opacityOnHover} ${
         debouncedSearchQuery ? "" : styles.hiddenIcon
       }`}
@@ -90,6 +115,12 @@ export default function SearchBarIntercept() {
       height={25}
       src={CloseIcon}
       onClick={closeHandler}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          closeHandler();
+          inputRef.current?.focus();
+        }
+      }}
       alt={"Close modal"}
       priority
     />
@@ -104,15 +135,6 @@ export default function SearchBarIntercept() {
         }}
         onKeyUp={(e) => {
           e.currentTarget.classList.remove(styles.typed);
-          if (e.key == "Escape") {
-            closeHandler();
-          }
-          if (e.key === "Enter" && !isSearchPage) {
-            push(
-              `/search/?${searchQuery ? "query=" + searchQuery + " " : ""}`,
-              { scroll: false }
-            );
-          }
         }}
       >
         <div
@@ -123,12 +145,24 @@ export default function SearchBarIntercept() {
           }
         />
         <input
+          ref={inputRef}
           className={styles.searchInput}
           autoComplete="off"
           name="search-features"
           id="search-features"
           placeholder={t("search")}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key == "Escape") {
+              closeHandler();
+            }
+            if (e.key === "Enter" && !isSearchPage) {
+              push(
+                `/search/?${searchQuery ? "query=" + searchQuery + " " : ""}`,
+                { scroll: false }
+              );
+            }
+          }}
           value={searchQuery || ""}
         />
         {filterIcon}

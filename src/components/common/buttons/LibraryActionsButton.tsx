@@ -54,6 +54,7 @@ const LibraryActionsButtons = ({
     <div
       className={`${styles.button} ${isLoading ? styles.loading : ""}`}
       onClick={inLibrary ? handleDeleteFromLibrary : handleAddToLibrary}
+      tabIndex={0}
     >
       {inLibrary ? (
         <Image

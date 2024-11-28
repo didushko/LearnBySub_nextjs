@@ -34,13 +34,13 @@ function ResponsiveNavigation({
         pathName,
         searchParams
       ),
-    [path, updateParams, searchParams]
+    [path, updateParams, searchParams, pathName]
   );
 
   const newPath = useMemo(
     () =>
       getNewPath(path || false, updateParams || false, pathName, searchParams),
-    [path, updateParams]
+    [path, updateParams, pathName, searchParams]
   );
   const loadingClass = useMemo(() => {
     return getLoadingClassName(
@@ -50,7 +50,7 @@ function ResponsiveNavigation({
       loadingClassName,
       blure
     );
-  }, [mode, fullOnMobile, around, loadingClassName]);
+  }, [mode, fullOnMobile, around, loadingClassName, blure]);
 
   const combainedClassName = function () {
     const selected = `${
@@ -83,7 +83,7 @@ function ResponsiveNavigation({
     if (predicate || pathName !== loadingState.initPath) {
       setLoadingState({ isLoading: false });
     }
-  }, [pathName, searchParams]);
+  }, [pathName, searchParams, predicate, loadingState.initPath]);
 
   return (
     <button

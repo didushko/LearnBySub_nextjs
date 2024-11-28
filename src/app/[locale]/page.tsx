@@ -3,20 +3,19 @@ import Multitabs from "@/components/common/Multitabs";
 import CardsGrid from "@/components/media/CardsGrid";
 import React from "react";
 
-import TranslationsProvider from "@/components/providers/TranslationsProvider";
 import initTranslations from "@/commons/i18n";
 
-export const typesList = ["movie", "tv"] as const;
+const typesList = ["movie", "tv"] as const;
 
-export const discoverList = [
+const discoverList = [
   "top_rated",
   "trend_week",
   "trend_day",
   "popular",
 ] as const;
 
-type TypeOptions = (typeof typesList)[number];
-type DiscoverOptions = (typeof discoverList)[number];
+export type TypeOptions = (typeof typesList)[number];
+export type DiscoverOptions = (typeof discoverList)[number];
 
 const i18nNamespaces = ["home"];
 

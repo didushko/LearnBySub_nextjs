@@ -102,7 +102,8 @@ class OpenSubService {
       let finded = result.find(
         (el) =>
           el.attributes.original_name?.toLowerCase() ===
-          originalName.toLowerCase()
+            originalName.toLowerCase() ||
+          el.attributes.original_title?.toLowerCase()===originalName.toLowerCase()
       );
       if (finded) {
         return finded;

@@ -27,7 +27,8 @@ export interface IEpisode {
 
 interface ITvshowAttributes {
   title: string;
-  original_name: string;
+  original_name?: string;
+  original_title?: string;
   year: string;
   imdb_id: number;
   tmdb_id: number;
@@ -60,7 +61,8 @@ interface IEpisodeAttributes {
 
 interface IMovieAttributes {
   title: string;
-  original_title: string;
+  original_title?: string;
+  original_name?: string;
   year: string;
   subtitles_counts: SubtitlesCounts;
   parent_title: string;

@@ -8,6 +8,7 @@ import SubtitlesSection from "./SubtitlesSection";
 import React from "react";
 import { ButtonSection } from "../common/buttons/ButtonSection";
 import initTranslations from "@/commons/i18n";
+import TranslationsProvider from "../providers/TranslationsProvider";
 
 const MediaComponent: React.FC<{
   media: IDetailsTv | IDetailsMovie;
@@ -25,17 +26,9 @@ const MediaComponent: React.FC<{
   locale,
 }) {
   const session = await auth();
-  const { t } = await initTranslations(locale, ["media"]);
+  const { t, resources } = await initTranslations(locale, ["media"]);
   const { title, year, originalTitle, runtime } =
     tmdbService.getUnitMediaFields(media);
-
-  const buttonSection = (
-    <ButtonSection
-      userId={session.user.id}
-      mediaId={media.id}
-      mediaType={type}
-    />
-  );
 
   return (
     <>
@@ -95,16 +88,26 @@ const MediaComponent: React.FC<{
             <br />
             <div>{media.overview || t("no_overview")}</div>
           </div>
-          {buttonSection}
-          <SubtitlesSection
-            userId={session.user.id}
-            media={media}
-            originalName={originalTitle}
-            type={type}
-            seasonIndex={seasonIndex}
-            episodeIndex={episodeIndex}
-            showModal={showModal}
-          />
+          <TranslationsProvider
+            locale={locale}
+            namespaces={["media"]}
+            resources={resources}
+          >
+            <ButtonSection
+              userId={session.user.id}
+              mediaId={media.id}
+              mediaType={type}
+            />
+            <SubtitlesSection
+              userId={session.user.id}
+              media={media}
+              originalName={originalTitle}
+              type={type}
+              seasonIndex={seasonIndex}
+              episodeIndex={episodeIndex}
+              showModal={showModal}
+            />
+          </TranslationsProvider>
         </div>
       </div>
     </>

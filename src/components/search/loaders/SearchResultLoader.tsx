@@ -5,7 +5,7 @@ export default function SearchResultLoader() {
   let data = [];
   for (let i = 0; i < 20; i++) {
     data.push(
-      <div key={i} className={originalStyles.resultContainer}>
+      <div key={i} className={originalStyles.mockContainer}>
         <div
           className={`${originalStyles.imageContainer} ${styles.loading}`}
         ></div>

@@ -5,6 +5,14 @@
   cursor: pointer;
 }
 
+.scale {
+ transition: scale 0.7s ease
+}
+
+.scale:hover,
+.scale:focus {
+  scale: 1.2;
+}
 @keyframes pulse {
   0% {
     transform: scale(1);

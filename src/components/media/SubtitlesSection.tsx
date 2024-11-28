@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { IDetailsMovie, IDetailsTv } from "../../interfaces/media";
 import { SelectSection } from "../subtitles/SelectSection";
 import EpisodeSelector from "./EpisodeSelector";
 import openSubService from "@/services/openSub-service";
-import SelectSectionLoader from "../subtitles/loaders/SelectSectionLoader";
 
 const SubtitlesSection = async function ({
   userId,

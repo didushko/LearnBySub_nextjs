@@ -16,6 +16,7 @@ const Multitabs = async ({
     <div className={styles.multitabs}>
       {tabs.map((el, i) => (
         <ResponsiveNavigation
+          key={el.value}
           updateParams={{ [paramName]: i === 0 ? null : el.value }}
           mode="border"
           className={styles.tab}

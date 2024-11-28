@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchBar from "../search/SearchBar";
 import ProfileButton from "./ProfileButton";
@@ -23,12 +22,14 @@ const Header = async ({ locale }: IHeaderProps) => {
       resources={resources}
     >
       <div className={styles.header} id={"header"}>
-        <div className={styles.headerLogo}>
-          <ResponsiveNavigation path="/" mode="hoverHeight" around={false}>
-            {/* <div className={styles.headerLogo}> */}
-            <span>LearnBySub</span>
-          </ResponsiveNavigation>
-        </div>
+        <ResponsiveNavigation
+          path="/"
+          mode="hoverHeight"
+          around={false}
+          className={styles.headerLogo}
+        >
+          <span>LearnBySub</span>
+        </ResponsiveNavigation>
         <div className={styles.headerElements}>
           <SearchBar />
           {/* <TestCounter /> */}
