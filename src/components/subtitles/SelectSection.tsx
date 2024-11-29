@@ -1,12 +1,13 @@
-import { ISubCash } from "@/database/models/subCash-model";
-import dictService from "@/services/dict-service";
-import subCashService from "@/services/subCash-service";
+import subStoreService, {
+  ISubStoreWithRate,
+} from "@/services/subStore-service";
 import style from "./SelectSection.module.css";
 import Link from "next/link";
 import Play from "./play/Play";
-import { DownloadCashButton } from "../common/buttons/DownloadCashButton";
+import { DownloadStoredItemButton } from "../common/buttons/DownloadStoredItemButton";
 import { Suspense } from "react";
 import SelectSectionLoader from "./loaders/SelectSectionLoader";
+import userSettingsService from "@/services/userSettings-service";
 
 interface ISelectSectionProps {
   userId: string;
@@ -38,20 +39,17 @@ export async function SelectSection({
     }
     id += "s" + seasonNumber + "e" + episodeNumber;
   }
-  const subsData = await subCashService.get(id, mediaType);
-  let stats = null;
-  if (subsData) {
-    stats = await dictService.getStatisticsBySubData(userId, subsData);
-  }
-  if (subsData) {
-    subsData.words = subsData?.words.sort((a, b) => a.freq - b.freq);
-  }
+
+  const playData = await subStoreService.getFilteredItem(userId, id, mediaType);
+  const userSettings = await userSettingsService.get(userId);
+
   return (
     <section about="StartLearningButtons" className={style.section}>
-      <DownloadCashButton
+      <DownloadStoredItemButton
         id={mediaId}
         type={mediaType}
-        inCash={!!subsData}
+        lang={userSettings.learningLanguage}
+        inStore={!!playData}
         originalName={originalName}
         seasonNumber={seasonNumber}
         episodeNumber={episodeNumber}
@@ -70,7 +68,7 @@ export async function SelectSection({
       >
         <div className={`${style.button} ${style.idioms}`}>
           <div>Idioms: top 10</div>
-          {getStats(stats, subsData, "idioms")}
+          {getStats(playData, "idioms")}
         </div>
       </Link>
       <Link
@@ -87,7 +85,7 @@ export async function SelectSection({
       >
         <div className={`${style.button} ${style.button}`}>
           <div>Verbal phrases: top 10</div>
-          {getStats(stats, subsData, "phrases")}
+          {getStats(playData, "phrases")}
         </div>
       </Link>
       <Link
@@ -104,10 +102,10 @@ export async function SelectSection({
       >
         <div className={`${style.button} ${style.button}`}>
           <div>Words: top 10</div>
-          {getStats(stats, subsData, "words")}
+          {getStats(playData, "words")}
         </div>
       </Link>
-      {!!subsData && showModal && <Play data={subsData[showModal]} />}
+      {!!playData && showModal && <Play data={playData[showModal]} />}
     </section>
   );
 }
@@ -121,14 +119,13 @@ const SelectSectionWithSuspense = async (args: ISelectSectionProps) => (
 export default SelectSectionWithSuspense;
 
 function getStats(
-  stats: any,
-  subsData: ISubCash | null,
+  subsData: ISubStoreWithRate | null,
   key: "idioms" | "phrases" | "words"
 ) {
   return (
     <div>
-      {stats && subsData
-        ? `I already know:   ${stats[key]}/${subsData[key].length}`
+      {subsData
+        ? `I already know:   ${subsData?.excludedItemsCount[key]}/${subsData[key].length}`
         : "   No stats"}
     </div>
   );

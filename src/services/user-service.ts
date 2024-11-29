@@ -26,11 +26,8 @@ class UserService extends DatabaseConnection {
         password: hashPassword,
         roles: [unactivatedRole?._id],
         activationLink,
-        uiLanguage,
       })
     ).populate("roles");
-
-    userSettingsService.update(user.id, { uiLanguage });
     return new UserDto(user);
   }
 

@@ -1,4 +1,4 @@
-import { IIdiom, IPhrase, IWord } from "@/database/models/subCash-model";
+import { IIdiom, IPhrase, IWord } from "@/database/models/subStore-model";
 import LexyError from "@/exceptions/lexyError";
 import axios, { AxiosInstance } from "axios";
 
@@ -26,12 +26,9 @@ class LexyService {
     rawSubtitles: string
   ): Promise<{ words: IWord[]; phrases: IPhrase[]; idioms: IIdiom[] }> {
     try {
-      let res = await this.subAxios.post(
-        "analyze/",
-        {
-          text: rawSubtitles,
-        },
-      );
+      let res = await this.subAxios.post("analyze/", {
+        text: rawSubtitles,
+      });
       return res.data;
     } catch (e: any) {
       console.log(e.message);

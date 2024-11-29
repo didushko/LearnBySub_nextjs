@@ -1,26 +1,28 @@
 "use client";
 
-import { addToCash } from "@/actions/subCashActions";
+import { addToStore } from "@/actions/subStoreActions";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import downloadIcon from "../../../../public/download-icon.svg";
 import styles from "./Button.module.css";
 import Image from "next/image";
-import { DownloadCashButtonDisabled } from "./DownloadCashButtonDisabled";
+import { DownloadStoredItemButtonDisabled } from "./DownloadStoredItemButtonDisabled";
 
-export function DownloadCashButton({
+export function DownloadStoredItemButton({
   id,
   type,
+  lang,
   originalName,
-  inCash,
+  inStore,
   seasonNumber,
   episodeNumber,
   path,
 }: {
   id: number;
   type: "tv" | "movie";
+  lang: string;
   originalName: string;
-  inCash: boolean;
+  inStore: boolean;
   seasonNumber?: string | number;
   episodeNumber?: string | number;
   path?: string;
@@ -32,9 +34,10 @@ export function DownloadCashButton({
     e.preventDefault();
     setIsLoading(true);
     try {
-      await addToCash(
+      await addToStore(
         id.toString(),
         type,
+        lang,
         originalName,
         seasonNumber?.toString(),
         episodeNumber?.toString(),
@@ -46,9 +49,9 @@ export function DownloadCashButton({
     setIsLoading(false);
   };
   if (isLoading) {
-    return <DownloadCashButtonDisabled isLoading={true} />;
+    return <DownloadStoredItemButtonDisabled isLoading={true} />;
   }
-  if (inCash) {
+  if (inStore) {
     return;
   } else
     return (

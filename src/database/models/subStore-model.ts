@@ -1,7 +1,8 @@
 import mongoose, { Schema, model, Model } from "mongoose";
 
-export interface ISubCash {
+export interface ISubStoreItem {
   mediaId: string;
+  lang: string;
   type: string;
   words: IWord[];
   idioms: IIdiom[];
@@ -25,9 +26,10 @@ export interface IPhrase {
   type: "phrasal_verbs";
 }
 
-const SubCashSchema = new Schema<ISubCash>({
+const SubStoreSchema = new Schema<ISubStoreItem>({
   mediaId: { type: String, required: true },
   type: { type: String, required: true },
+  lang: { type: String, required: true },
   words: [
     {
       value: { type: String, required: true },
@@ -52,7 +54,7 @@ const SubCashSchema = new Schema<ISubCash>({
   ],
 });
 
-const SubCash: Model<ISubCash> =
-  mongoose?.models?.SubCash || model("SubCash", SubCashSchema);
+const SubStore: Model<ISubStoreItem> =
+  mongoose?.models?.SubStore || model("SubStore", SubStoreSchema);
 
-export default SubCash;
+export default SubStore;

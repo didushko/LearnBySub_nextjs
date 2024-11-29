@@ -2,7 +2,7 @@ import mongoose, { Schema, model, Types, Model } from "mongoose";
 
 export interface IDict {
   user_id: String;
-  words?: {
+  words: {
     value: string;
     rate: number;
   }[];
@@ -27,11 +27,13 @@ const DictSchema = new Schema<IDict>({
   idioms: [
     {
       value: { type: String, require: true },
+      rate: { type: Number, require: true, default: 0 },
     },
   ],
   phrases: [
     {
       value: { type: String, require: true },
+      rate: { type: Number, require: true, default: 0 },
     },
   ],
 });

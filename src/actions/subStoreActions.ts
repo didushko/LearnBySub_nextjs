@@ -2,20 +2,21 @@
 
 import LexyService from "@/services/lexy-service";
 import openSubService from "@/services/openSub-service";
-import subCashService from "@/services/subCash-service";
+import subStoreService from "@/services/subStore-service";
 import { revalidatePath } from "next/cache";
 
-export async function addToCash(
+export async function addToStore(
   itemId: string,
   type: "movie" | "tv",
+  lang: string,
   originalName: string,
   season: string | undefined,
   episode: string | undefined,
   path?: string
 ) {
   const id = season && episode ? itemId + "s" + season + "e" + episode : itemId;
-  let cash = await subCashService.get(id, type);
-  if (!cash) {
+  let storeItem = await subStoreService.get(id, type, lang);
+  if (!storeItem) {
     const sub = await openSubService.getSubText(
       itemId,
       type,
@@ -24,9 +25,9 @@ export async function addToCash(
       episode
     );
     const scanned = await LexyService.getAnalyzedResults(sub);
-    cash = await subCashService.add({
+    storeItem = await subStoreService.add({
       ...scanned,
-      ...{ mediaId: id, type: type },
+      ...{ mediaId: id, type, lang },
     });
   }
   if (path) {

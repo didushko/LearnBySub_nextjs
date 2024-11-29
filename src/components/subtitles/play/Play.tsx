@@ -3,13 +3,18 @@
 import Modal from "@/components/common/Modal";
 import { Suspense } from "react";
 import style from "./Play.module.css";
-import { IIdiom, IPhrase, IWord } from "@/database/models/subCash-model";
+import { IIdiom, IPhrase, IWord } from "@/database/models/subStore-model";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import {
+  IIdiomWithRate,
+  IPhraseWithRate,
+  IWordWithRate,
+} from "@/services/subStore-service";
 
 export default function Play({
   data,
 }: {
-  data?: IWord[] | IIdiom[] | IPhrase[];
+  data: IWordWithRate[] | IIdiomWithRate[] | IPhraseWithRate[];
 }) {
   const pathName = usePathname();
   const { replace } = useRouter();
@@ -34,7 +39,7 @@ export default function Play({
     >
       <div className={style.content}>
         {data?.map((el) => (
-          <div>
+          <div key={el.value}>
             <div>{el.value}</div>
             <div>{el.type !== "word" ? el.definitions : el.freq}</div>
             <br></br>

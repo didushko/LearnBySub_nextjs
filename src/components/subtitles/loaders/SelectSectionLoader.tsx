@@ -1,9 +1,9 @@
-import { DownloadCashButtonDisabled } from "@/components/common/buttons/DownloadCashButtonDisabled";
+import { DownloadStoredItemButtonDisabled } from "@/components/common/buttons/DownloadStoredItemButtonDisabled";
 import style from "../SelectSection.module.css";
 export default function SelectSectionLoader() {
   return (
     <section about="StartLearningButtons" className={style.section}>
-      <DownloadCashButtonDisabled isLoading={true} />
+      <DownloadStoredItemButtonDisabled isLoading={true} />
       <div className={`${style.button} ${style.idioms} ${style.loading}`}>
         <div>Loading idioms</div>
       </div>

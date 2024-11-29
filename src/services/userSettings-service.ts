@@ -5,22 +5,21 @@ import UserSettingsModel, {
 import ApiError from "../exceptions/apiError";
 import userModel from "@/database/models/user-model";
 import DatabaseConnection from "@/database/DatabaseConnetion";
-
+import { use } from "react";
 
 class UserSettingsService extends DatabaseConnection {
   async get(userId: string) {
     try {
-      let found = await UserSettingsModel.findOne({ userId });
+      let found = await UserSettingsModel.findOne({ user_id: userId });
       if (!found) {
-        const user = await userModel.findOne({ _id: userId });
-        if (!user) {
-          throw ApiError.badRequest(`User with userId ${userId} don't found`);
-        }
-        user.save();
-        found = await UserSettingsModel.findOne({ userId });
+        const userSettings = await UserSettingsModel.create({
+          user_id: userId,
+        });
+        return userSettings.toObject();
       }
       return found!.toObject();
-    } catch {
+    } catch (e) {
+      console.log(e);
       throw ApiError.badRequest(`Settings with userId ${userId} don't found`);
     }
   }

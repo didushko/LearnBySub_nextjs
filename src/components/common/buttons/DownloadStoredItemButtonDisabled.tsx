@@ -2,7 +2,7 @@ import downloadDisabledIcon from "../../../../public/download-disabled-icon.svg"
 import styles from "./Button.module.css";
 import Image from "next/image";
 
-export function DownloadCashButtonDisabled({
+export function DownloadStoredItemButtonDisabled({
   isLoading = false,
 }: {
   isLoading?: boolean;
