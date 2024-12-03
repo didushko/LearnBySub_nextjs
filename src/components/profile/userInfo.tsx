@@ -3,7 +3,7 @@ import styles from "./UserInfo.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { SignOutButton } from "../auth/AuthButtons";
-import { profileTabs } from "@/app/[locale]/profile/profilePagesList";
+import { profileTabs } from "@/app/[locale]/(main)/profile/profilePagesList";
 import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
 export default async function UserInfo({ page }: { page?: string }) {

@@ -4,7 +4,6 @@ import ProfileButton from "./ProfileButton";
 import LibraryButton from "../common/buttons/LibraryButton";
 import initTranslations from "@/commons/i18n";
 import TranslationsProvider from "../providers/TranslationsProvider";
-import HideOnAuthPagesWrapper from "../common/HideOnAuthPagesWrapper";
 import LanguageChanger from "../common/Сhanger";
 import ResponsiveNavigation from "../common/ResponsiveNavigation";
 
@@ -45,10 +44,4 @@ const Header = async ({ locale }: IHeaderProps) => {
   );
 };
 
-const HideOnAuthHeader = async (args: IHeaderProps) => (
-  <HideOnAuthPagesWrapper>
-    <Header {...args} />
-  </HideOnAuthPagesWrapper>
-);
-
-export default HideOnAuthHeader;
+export default Header;
