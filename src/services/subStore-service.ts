@@ -103,7 +103,7 @@ class SubStoreService extends DatabaseConnection {
             $project: {
               mediaId: 1,
               type: 1,
-              originalWords: "$words", // Preserve original for size calculation
+              originalWords: "$words",
               originalIdioms: "$idioms",
               originalPhrases: "$phrases",
               words: getAggregatedField("words"),
@@ -115,21 +115,18 @@ class SubStoreService extends DatabaseConnection {
             $addFields: {
               excludedItemsCount: {
                 words: {
-                  $subtract: [
-                    { $size: "$originalWords" }, // Total items in `words`
-                    { $size: "$words" }, // Items remaining after filtering
-                  ],
+                  $subtract: [{ $size: "$originalWords" }, { $size: "$words" }],
                 },
                 idioms: {
                   $subtract: [
-                    { $size: "$originalIdioms" }, // Total items in `idioms`
-                    { $size: "$idioms" }, // Items remaining after filtering
+                    { $size: "$originalIdioms" },
+                    { $size: "$idioms" },
                   ],
                 },
                 phrases: {
                   $subtract: [
-                    { $size: "$originalPhrases" }, // Total items in `phrases`
-                    { $size: "$phrases" }, // Items remaining after filtering
+                    { $size: "$originalPhrases" },
+                    { $size: "$phrases" },
                   ],
                 },
               },
@@ -137,13 +134,22 @@ class SubStoreService extends DatabaseConnection {
           },
           {
             $project: {
-              originalWords: 0, // Clean up intermediate fields
+              originalWords: 0,
               originalIdioms: 0,
               originalPhrases: 0,
             },
           },
+          {
+            $unset: [
+              "_id",
+              "__v",
+              "user_id",
+              "words._id",
+              "idioms._id",
+              "phrases._id",
+            ],
+          },
         ]);
-
       return filteredSubItems.length > 0 ? filteredSubItems[0] : null;
     } catch (error) {
       console.error("Error fetching filtered subStore", error);
@@ -156,7 +162,7 @@ const subStoreService = new SubStoreService();
 export default subStoreService;
 
 const getAggregatedField = (field: string) => {
-  return {
+  const baseField = {
     $filter: {
       input: {
         $map: {
@@ -196,4 +202,14 @@ const getAggregatedField = (field: string) => {
       cond: { $lt: ["$$mergedItem.rate", 10] }, // Filter items where rate < 10
     },
   };
+  if (field === "words") {
+    return {
+      $sortArray: {
+        input: baseField,
+        sortBy: { freq: 1 },
+      },
+    };
+  }
+
+  return baseField;
 };

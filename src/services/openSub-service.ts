@@ -68,7 +68,7 @@ class OpenSubService {
       let subtitles: { data: ISubtitle[] } = (
         await this.subAxios.get("/subtitles", {
           params: {
-            [type === "Movie" ? "feature_id" : "parent_feature_id"]:
+            [type === "Movie" ? "id" : "parent_feature_id"]:
               findedFeature.attributes?.feature_id,
             type,
             ai_translated: "exclude",
@@ -93,21 +93,27 @@ class OpenSubService {
   }
 
   async getFeatureByTmdbId(tmdb_id: number | string, originalName: string) {
-    let result: ITvshow[] = (
-      await this.subAxios.get("/features", {
-        params: { tmdb_id: tmdb_id.toString(), type: "tvshow" },
-      })
-    ).data.data;
-    if (result && result.length > 0) {
-      let finded = result.find(
-        (el) =>
-          el.attributes.original_name?.toLowerCase() ===
-            originalName.toLowerCase() ||
-          el.attributes.original_title?.toLowerCase()===originalName.toLowerCase()
-      );
-      if (finded) {
-        return finded;
+    try {
+      let result: ITvshow[] = (
+        await this.subAxios.get("/features", {
+          params: { tmdb_id: tmdb_id.toString() },
+        })
+      ).data.data;
+      if (result && result.length > 0) {
+        let finded = result.find(
+          (el) =>
+            el.attributes.original_name?.toLowerCase() ===
+              originalName.toLowerCase() ||
+            el.attributes.original_title?.toLowerCase() ===
+              originalName.toLowerCase() ||
+            el.attributes.title?.toLowerCase() === originalName.toLowerCase()
+        );
+        if (finded) {
+          return finded;
+        }
       }
+    } catch (e: any | AxiosError) {
+      throw OpensubError.unexpectError(e);
     }
   }
 
@@ -135,10 +141,7 @@ class OpenSubService {
 
       return response;
     } catch (e: any | AxiosError) {
-      if (e instanceof AxiosError) {
-        throw new OpensubError(e.response?.status, e.message, e);
-      }
-      throw OpensubError.unexpectError(e.message);
+      throw OpensubError.unexpectError(e);
     }
   }
 
@@ -151,10 +154,7 @@ class OpenSubService {
       ).data;
       return response;
     } catch (e: any | AxiosError) {
-      if (e instanceof AxiosError) {
-        throw new OpensubError(e.response?.status, e.message, e);
-      }
-      throw OpensubError.unexpectError(e.message);
+      throw OpensubError.unexpectError(e);
     }
   }
 
@@ -167,10 +167,7 @@ class OpenSubService {
       ).data;
       return response;
     } catch (e: any | AxiosError) {
-      if (e instanceof AxiosError) {
-        throw new OpensubError(e.response?.status, e.message, e);
-      }
-      throw OpensubError.unexpectError(e.message);
+      throw OpensubError.unexpectError(e);
     }
   }
 
